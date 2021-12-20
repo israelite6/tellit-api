@@ -1,0 +1,10 @@
+{
+  "apps": [
+    {
+      "name": "tellit-api-dev",
+      "script": "npm",
+      "interpreter": "none",
+      "args": "run start:dev"
+    }
+  ]
+}
