@@ -1,0 +1,30 @@
+{
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/api/src",
+  "monorepo": true,
+  "root": "apps/api",
+  "compilerOptions": {
+    "webpack": true,
+    "tsConfigPath": "apps/api/tsconfig.app.json"
+  },
+  "projects": {
+    "api": {
+      "type": "application",
+      "root": "apps/api",
+      "entryFile": "main",
+      "sourceRoot": "apps/api/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/api/tsconfig.app.json"
+      }
+    },
+    "queue-worker": {
+      "type": "application",
+      "root": "apps/queue-worker",
+      "entryFile": "main",
+      "sourceRoot": "apps/queue-worker/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/queue-worker/tsconfig.app.json"
+      }
+    }
+  }
+}
