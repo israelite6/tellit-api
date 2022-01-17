@@ -69,7 +69,7 @@ export class HelperService {
     sendGrid
       .sendMultiple(msg)
       .then((res) => {
-        // console.log(res);
+        console.log(res);
       })
       .catch((e) => {
         // console.log(e.response.body);
