@@ -1,2 +1,5 @@
 export const SEND_EMAIL_QUEUE_NAME = 'send_email',
   SIGNUP_EMAIL_JOB = 'signupEmail';
+
+export const FORGET_PASSWORD_TOKEN_LENGTH = 4,
+  FORGET_PASSWORD_TOKEN_EXPIRATION_IN_MINUTE = 15;

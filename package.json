@@ -32,7 +32,9 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^8.0.1",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/serve-static": "^2.2.2",
     "@prisma/client": "^3.6.0",
+    "@sendgrid/mail": "^7.6.0",
     "bcrypt": "^5.0.1",
     "bull": "^4.2.0",
     "bull-board": "^1.7.2",
@@ -42,6 +44,7 @@
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
     "pre-commit": "^1.2.2",
+    "rand-token": "^1.0.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"

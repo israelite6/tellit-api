@@ -43,7 +43,7 @@ export class UsersService {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(userId: string) {
+    return this.usersRepository.getOneByUserId(userId);
   }
 }

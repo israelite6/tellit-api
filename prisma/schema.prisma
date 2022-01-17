@@ -24,9 +24,9 @@ model RolePermission {
   roleId       String
   permission   Permission @relation(references: [id], fields: [permissionId])
   role         Role       @relation(references: [id], fields: [roleId], onDelete: Cascade)
-  created_at   DateTime?  @default(now())
-  updated_at   DateTime?
-  deleted_at   DateTime?
+  createdAt    DateTime?  @default(now()) @map("created_at")
+  updatedAt    DateTime?  @map("updated_at")
+  deletedAt    DateTime?  @map("deleted_at")
 
   @@map("role_permission")
 }
@@ -36,29 +36,31 @@ model Role {
   role            String
   RolePermissions RolePermission[]
   User            User[]
-  created_at      DateTime?        @default(now())
-  updated_at      DateTime?
-  deleted_at      DateTime?
+  createdAt       DateTime?        @default(now()) @map("created_at")
+  updatedAt       DateTime?        @map("updated_at")
+  deletedAt       DateTime?        @map("deleted_at")
 
   @@map("roles")
 }
 
 model User {
-  id          String    @id @default(cuid())
-  email       String    @unique
-  firstName   String
-  lastName    String
-  middleName  String?
-  username    String    @unique
-  address     String?
-  phoneNumber String    @unique
-  password    String
-  gender      Gender?
-  roleId      String?
-  role        Role?     @relation(references: [id], fields: [roleId])
-  created_at  DateTime? @default(now())
-  updated_at  DateTime?
-  deleted_at  DateTime?
+  id                            String    @id @default(cuid())
+  email                         String    @unique
+  firstName                     String    @map("first_name")
+  lastName                      String    @map("last_name")
+  middleName                    String?   @map("middle_name")
+  username                      String    @unique
+  address                       String?
+  phoneNumber                   String    @unique @map("phone_number")
+  password                      String
+  gender                        Gender?
+  forgetPasswordToken           String?   @map("forget_password_token")
+  forgetPasswordTokenExpiration DateTime? @map("forget_password_token_expiration")
+  roleId                        String?   @map("role_id")
+  role                          Role?     @relation(references: [id], fields: [roleId])
+  createdAt                     DateTime? @default(now()) @map("created_at")
+  updatedAt                     DateTime? @map("updated_at")
+  deletedAt                     DateTime? @map("deleted_at")
 
   @@map("users")
 }

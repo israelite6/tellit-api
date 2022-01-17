@@ -1,3 +1,7 @@
+import {
+  IUpdateUserTokeinByUserIdProps,
+  IUpdatePasswordByIdProps,
+} from './user.respository.interface';
 import { PrismaService } from '../../services/prisma/prisma.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
@@ -26,7 +30,7 @@ export class UsersRespository {
 
   async getOneByEmailOrUsernameOrPhoneNumber(
     email: string,
-  ): Promise<Partial<User>> {
+  ): Promise<Partial<User> | null> {
     const user = await this.prismaService.user.findFirst({
       where: { OR: [{ email }, { username: email }, { phoneNumber: email }] },
       select: {
@@ -35,6 +39,63 @@ export class UsersRespository {
         firstName: true,
         lastName: true,
         password: true,
+        middleName: true,
+        username: true,
+        id: true,
+      },
+    });
+
+    return user;
+  }
+
+  async updateForgetPasswordTokenByUserId({
+    id,
+    forgetPasswordToken,
+    forgetPasswordTokenExpiration,
+  }: IUpdateUserTokeinByUserIdProps): Promise<User> {
+    const updated = await this.prismaService.user.update({
+      where: { id },
+      data: { forgetPasswordToken, forgetPasswordTokenExpiration },
+    });
+
+    return updated;
+  }
+
+  async getOneByForgetPasswordToken(forgetPasswordToken: string) {
+    const now = new Date();
+    const user = await this.prismaService.user.findFirst({
+      where: {
+        AND: [
+          { forgetPasswordToken },
+          { forgetPasswordTokenExpiration: { gt: now } },
+        ],
+      },
+    });
+    return user;
+  }
+
+  async updatePasswordByUserId({
+    id,
+    password,
+    forgetPasswordTokenExpiration,
+    forgetPasswordToken,
+  }: IUpdatePasswordByIdProps) {
+    const updated = await this.prismaService.user.update({
+      where: { id },
+      data: { password, forgetPasswordToken, forgetPasswordTokenExpiration },
+    });
+    return updated;
+  }
+
+  async getOneByUserId(id: string): Promise<Partial<User> | null> {
+    const user = await this.prismaService.user.findFirst({
+      where: { id },
+      select: {
+        email: true,
+        phoneNumber: true,
+        firstName: true,
+        lastName: true,
+        password: false,
         middleName: true,
         username: true,
         id: true,

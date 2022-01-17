@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Request,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -31,7 +32,13 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get(':id')
+  @Get('/profile')
+  remove(@Request() req) {
+    console.log(req.user);
+    return this.usersService.remove(req.user.userId);
+  }
+
+  @Get(':id/id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
   }
@@ -39,10 +46,5 @@ export class UsersController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
   }
 }

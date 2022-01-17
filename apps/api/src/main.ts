@@ -35,7 +35,7 @@ async function bootstrap() {
   app.enableCors();
 
   const serverAdapter = new ExpressAdapter();
-  serverAdapter.setBasePath('/bull-board');
+  serverAdapter.setBasePath('/queues');
 
   const aQueue = app.get<Queue>(`BullQueue_${SEND_EMAIL_QUEUE_NAME}`);
 
