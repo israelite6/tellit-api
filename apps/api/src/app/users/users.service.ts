@@ -27,7 +27,6 @@ export class UsersService {
       email: user.email,
       name: `${user.firstName} ${user.lastName}`,
     });
-    console.log(test);
     return this.helperService.signJwt(user);
   }
 

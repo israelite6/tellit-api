@@ -4,7 +4,7 @@
       "name": "tellit-api-dev",
       "script": "npm",
       "interpreter": "none",
-      "args": "run start:dev api"
+      "args": "run start:prod api"
     }
   ]
 }

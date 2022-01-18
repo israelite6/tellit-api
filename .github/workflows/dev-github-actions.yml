@@ -22,7 +22,7 @@ jobs:
           SLACK_CHANNEL: build
           SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
           SLACK_ICON: https://github.com/rtCamp.png?size=48
-          SLACK_MESSAGE: "Building just begin now :rocket:"
+          SLACK_MESSAGE: 'Building just begin now :rocket:'
           SLACK_TITLE: Build Begin
           SLACK_USERNAME: rtCamp
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
@@ -57,7 +57,7 @@ jobs:
           SLACK_CHANNEL: build
           SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
           SLACK_ICON: https://github.com/rtCamp.png?size=48
-          SLACK_MESSAGE: "Building just complete :rocket:"
+          SLACK_MESSAGE: 'Building just complete :rocket:'
           SLACK_TITLE: Build Complete
           SLACK_USERNAME: rtCamp
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
