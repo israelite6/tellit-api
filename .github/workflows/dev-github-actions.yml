@@ -45,9 +45,11 @@ jobs:
             nvm install --lts
             node -v
             npm -v
-            cd /var/www/html/tellit/new/tellit-api
+            cd /var/www/html/tellit/dev/tellit-api
             git pull
             npm install
+            npm run build:api
+            npm run build:queue-worker
             npx prisma generate
             npx  prisma migrate dev
             npm run start:pm2
