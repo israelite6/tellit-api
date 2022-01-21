@@ -19,6 +19,7 @@ export class HelperService {
   ) {}
 
   async hash(plainText: string): Promise<string> {
+    console.log(plainText, this.configService.get<number>('salt'));
     const hash = await bcrypt.hash(
       plainText,
       this.configService.get<number>('salt'),
