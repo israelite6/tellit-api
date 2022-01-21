@@ -18,7 +18,7 @@ export class UsersRespository {
       if (e.code === 'P2002' && target === 'email') {
         throw new BadRequestException('Email already exist');
       }
-      if (e.code === 'P2002' && target === 'phoneNumber') {
+      if (e.code === 'P2002' && target === 'phone_number') {
         throw new BadRequestException('Phone number already exist');
       }
       if (e.code === 'P2002' && target === 'username') {

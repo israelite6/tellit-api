@@ -48,8 +48,11 @@ jobs:
             cd /var/www/html/tellit/dev/tellit-api
             git pull
             npm install
+            npm run build:api
+            npm run build:queue-worker
             npx prisma generate
             npx  prisma migrate dev
+            npm run start:pm2
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         env:

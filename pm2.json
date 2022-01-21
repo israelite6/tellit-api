@@ -4,13 +4,13 @@
       "name": "tellit-api-dev",
       "script": "npm",
       "interpreter": "none",
-      "args": "run start:api:dev"
+      "args": "run start:api:prod"
     },
     {
       "name": "tellit-queue-worker-dev",
       "script": "npm",
       "interpreter": "none",
-      "args": "run start:queue-worker:dev"
+      "args": "run start:queue-worker:prod"
     }
   ]
 }
