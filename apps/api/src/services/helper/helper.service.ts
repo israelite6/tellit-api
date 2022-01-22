@@ -1,13 +1,18 @@
 import {
   FORGET_PASSWORD_TOKEN_LENGTH,
   FORGET_PASSWORD_TOKEN_EXPIRATION_IN_MINUTE,
+  PAGINATION_THRESHOLD,
 } from './../../config/constants';
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { User } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
-import { HashMatchParamInterface, ISendEmailProps } from './helper.interface';
+import {
+  HashMatchParamInterface,
+  IPagination,
+  ISendEmailProps,
+} from './helper.interface';
 import { generator } from 'rand-token';
 import * as sendGrid from '@sendgrid/mail';
 
@@ -74,5 +79,10 @@ export class HelperService {
       .catch((e) => {
         // console.log(e.response.body);
       });
+  }
+
+  paginate(page: number): IPagination {
+    const skip = PAGINATION_THRESHOLD * (page - 1);
+    return { skip, take: PAGINATION_THRESHOLD };
   }
 }

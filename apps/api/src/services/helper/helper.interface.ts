@@ -9,3 +9,8 @@ export interface ISendEmailProps {
   html: string;
   title: string;
 }
+
+export interface IPagination {
+  skip: number;
+  take: number;
+}

@@ -63,6 +63,7 @@ model User {
   deletedAt                     DateTime? @map("deleted_at")
 
   @@map("users")
+  Topic Topic[]
 }
 
 enum Gender {
@@ -80,6 +81,25 @@ model Forum {
   createdAt   DateTime? @default(now()) @map("created_at")
   updatedAt   DateTime? @map("updated_at")
   deletedAt   DateTime? @map("deleted_at")
-  
+
   @@map("forums")
+  Topic Topic[]
+}
+
+model Topic {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  userId      String
+  user        User      @relation(references: [id], fields: [userId])
+  showOnFeed  Boolean?  @default(false) @map("show_on_feed") 
+  forumId     Int       @map("forum_id")
+  forum       Forum     @relation(references: [id], fields: [forumId])
+  views       Int?      @default(0)
+  isVisible   Boolean?   @default(true)
+  createdAt   DateTime? @default(now()) @map("created_at")
+  updatedAt   DateTime? @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  @@map("topics")
 }

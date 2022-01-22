@@ -10,6 +10,7 @@ import configurations from './config/configruations';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { ForumsModule } from './app/forums/forums.module';
+import { TopicsModule } from './app/topics/topics.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ForumsModule } from './app/forums/forums.module';
     ConfigModule.forRoot({ isGlobal: true, load: [configurations] }),
     AuthModule,
     ForumsModule,
+    TopicsModule,
   ],
   controllers: [AppController],
   providers: [
