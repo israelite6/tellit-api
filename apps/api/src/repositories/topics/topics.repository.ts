@@ -37,6 +37,7 @@ export class TopicsRespository {
           description: true,
           createdAt: true,
           id: true,
+          views: true,
           user: {
             select: {
               username: true,
@@ -79,6 +80,7 @@ export class TopicsRespository {
             title: true,
           },
         },
+        views: true,
       },
     });
     console.log(topic);
@@ -96,5 +98,12 @@ export class TopicsRespository {
   async removeById(id: number): Promise<Topic> {
     const updated = await this.prismaService.topic.delete({ where: { id } });
     return updated;
+  }
+
+  async increaseViewById(id: number) {
+    return this.prismaService.topic.update({
+      where: { id },
+      data: { views: { increment: 1 } },
+    });
   }
 }

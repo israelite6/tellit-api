@@ -23,7 +23,7 @@ export class TopicsService {
   async findAll(query: GetTopicDto): Promise<IFindAllTopic> {
     const { topics, total } = await this.topicsRepository.findMany({
       ...this.helperService.paginate(query.page),
-      forumId: parseInt(query.forumId) || undefined,
+      forumId: +query.forumId || undefined,
     });
 
     return { topics, meta: { total, page: query.page } };
@@ -42,5 +42,11 @@ export class TopicsService {
     await this.topicsRepository.removeById(id);
 
     return { description: 'Deleted successfully' };
+  }
+
+  async views(id: number) {
+    await this.topicsRepository.increaseViewById(id);
+
+    return { description: 'Operation successfully' };
   }
 }

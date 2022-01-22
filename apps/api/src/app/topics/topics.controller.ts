@@ -50,4 +50,9 @@ export class TopicsController {
   remove(@Param('id') id: string) {
     return this.topicsService.remove(+id);
   }
+
+  @Patch('/views/:id')
+  async views(@Param('id') id: string) {
+    return this.topicsService.views(+id);
+  }
 }
