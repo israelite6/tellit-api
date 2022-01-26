@@ -11,6 +11,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { ForumsModule } from './app/forums/forums.module';
 import { TopicsModule } from './app/topics/topics.module';
+import { TopicCommentsModule } from './app/topic-comments/topic-comments.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TopicsModule } from './app/topics/topics.module';
     AuthModule,
     ForumsModule,
     TopicsModule,
+    TopicCommentsModule,
   ],
   controllers: [AppController],
   providers: [

@@ -62,8 +62,9 @@ model User {
   updatedAt                     DateTime? @map("updated_at")
   deletedAt                     DateTime? @map("deleted_at")
 
+  Topic   Topic[]
+  Comment TopicComment[]
   @@map("users")
-  Topic Topic[]
 }
 
 enum Gender {
@@ -82,8 +83,8 @@ model Forum {
   updatedAt   DateTime? @map("updated_at")
   deletedAt   DateTime? @map("deleted_at")
 
-  @@map("forums")
   Topic Topic[]
+  @@map("forums")
 }
 
 model Topic {
@@ -92,14 +93,31 @@ model Topic {
   description String
   userId      String
   user        User      @relation(references: [id], fields: [userId])
-  showOnFeed  Boolean?  @default(false) @map("show_on_feed") 
+  showOnFeed  Boolean?  @default(false) @map("show_on_feed")
   forumId     Int       @map("forum_id")
-  forum       Forum     @relation(references: [id], fields: [forumId])
+  forum       Forum     @relation(references: [id], fields: [forumId], onDelete: Cascade)
   views       Int?      @default(0)
-  isVisible   Boolean?   @default(true)
+  isVisible   Boolean?  @default(true)
   createdAt   DateTime? @default(now()) @map("created_at")
   updatedAt   DateTime? @map("updated_at")
   deletedAt   DateTime? @map("deleted_at")
 
+  Comment TopicComment[]
   @@map("topics")
+}
+
+model TopicComment {
+  id             String    @id @default(cuid())
+  userId         String    @map("user_id")
+  user           User      @relation(references: [id], fields: [userId])
+  topicId        Int       @map("topic_id")
+  topic          Topic     @relation(references: [id], fields: [topicId], onDelete: Cascade)
+  comment        String
+  isAnonymous    Boolean?  @default(false) @map("is_anonymous")
+  topicCommentId String?   @map("topic_comment_id")
+  createdAt      DateTime? @default(now()) @map("created_at")
+  updatedAt      DateTime? @map("updated_at")
+  deletedAt      DateTime? @map("deleted_at")
+
+  @@map("topic_comments")
 }

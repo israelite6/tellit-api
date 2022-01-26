@@ -46,6 +46,7 @@ export class TopicsRespository {
           forum: {
             select: {
               title: true,
+              id: true,
             },
           },
         },
@@ -78,6 +79,7 @@ export class TopicsRespository {
         forum: {
           select: {
             title: true,
+            id: true,
           },
         },
         views: true,
