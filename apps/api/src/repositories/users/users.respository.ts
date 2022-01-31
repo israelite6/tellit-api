@@ -104,4 +104,12 @@ export class UsersRespository {
 
     return user;
   }
+
+  async updateById(id: string, data: Partial<User>): Promise<Partial<User>> {
+    const updated = await this.prismaService.user.update({
+      where: { id },
+      data,
+    });
+    return { id };
+  }
 }

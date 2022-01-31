@@ -44,8 +44,8 @@ export class TopicCommentsRespository {
           AND: [
             { topicId },
             ...(topicCommentId
-              ? [{ topicCommentId }]
-              : [{ NOT: [{ topicCommentId: null }] }]),
+              ? [{ NOT: [{ topicCommentId: null }] }]
+              : [{ topicCommentId: null }]),
           ],
         },
       }),
@@ -54,8 +54,8 @@ export class TopicCommentsRespository {
           AND: [
             { topicId },
             ...(topicCommentId
-              ? [{ topicCommentId }]
-              : [{ NOT: [{ topicCommentId: null }] }]),
+              ? [{ NOT: [{ topicCommentId: null }] }]
+              : [{ topicCommentId: null }]),
           ],
         },
       }),

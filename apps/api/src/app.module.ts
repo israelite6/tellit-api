@@ -12,6 +12,8 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { ForumsModule } from './app/forums/forums.module';
 import { TopicsModule } from './app/topics/topics.module';
 import { TopicCommentsModule } from './app/topic-comments/topic-comments.module';
+import { EducationHistoriesModule } from './app/education-histories/education-histories.module';
+import { WorkExperienceModule } from './app/work-experience/work-experience.module';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { TopicCommentsModule } from './app/topic-comments/topic-comments.module'
     ForumsModule,
     TopicsModule,
     TopicCommentsModule,
+    EducationHistoriesModule,
+    WorkExperienceModule,
   ],
   controllers: [AppController],
   providers: [
