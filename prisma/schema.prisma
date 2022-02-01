@@ -69,6 +69,7 @@ model User {
   Comment          TopicComment[]
   EducationHistory EducationHistory[]
   WorkExperience   WorkExperience[]
+  TopicLike        TopicLike[]
   @@map("users")
 }
 
@@ -93,7 +94,7 @@ model Forum {
 }
 
 model Topic {
-  id          Int       @id @default(autoincrement())
+  id          BigInt    @id @default(autoincrement())
   title       String
   description String
   userId      String
@@ -101,13 +102,14 @@ model Topic {
   showOnFeed  Boolean?  @default(false) @map("show_on_feed")
   forumId     Int       @map("forum_id")
   forum       Forum     @relation(references: [id], fields: [forumId], onDelete: Cascade)
-  views       Int?      @default(0)
+  views       BigInt?   @default(0)
   isVisible   Boolean?  @default(true)
   createdAt   DateTime? @default(now()) @map("created_at")
   updatedAt   DateTime? @map("updated_at")
   deletedAt   DateTime? @map("deleted_at")
 
-  Comment TopicComment[]
+  Comment   TopicComment[]
+  TopicLike TopicLike[]
   @@map("topics")
 }
 
@@ -115,7 +117,7 @@ model TopicComment {
   id             String    @id @default(cuid())
   userId         String    @map("user_id")
   user           User      @relation(references: [id], fields: [userId])
-  topicId        Int       @map("topic_id")
+  topicId        BigInt    @map("topic_id")
   topic          Topic     @relation(references: [id], fields: [topicId], onDelete: Cascade)
   comment        String
   isAnonymous    Boolean?  @default(false) @map("is_anonymous")
@@ -160,4 +162,25 @@ model WorkExperience {
   deletedAt   DateTime? @map("deleted_at")
 
   @@map("work_experiences")
+}
+
+model TopicLike {
+  id        String    @id @default(cuid())
+  userId    String    @map("user_id")
+  user      User      @relation(references: [id], fields: [userId], onDelete: Cascade)
+  topicId   BigInt    @map("topic_id")
+  topic     Topic     @relation(references: [id], fields: [topicId])
+  type      ELikeType
+  createdAt DateTime? @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("topic_likes")
+}
+
+enum ELikeType {
+  LIKE
+  INSIGHTFUL
+  THREE_GBOSA
+  BEER
 }

@@ -1,26 +1,36 @@
 import { Injectable } from '@nestjs/common';
+import { WorkExperienceRespository } from '../../repositories/work-experience/work-experience.repository';
 import { CreateWorkExperienceDto } from './dto/create-work-experience.dto';
 import { UpdateWorkExperienceDto } from './dto/update-work-experience.dto';
+import {
+  ICreateWorkExperienceProps,
+  IUpdateWorkExperienceProps,
+} from './work-experience.interface';
 
 @Injectable()
 export class WorkExperienceService {
-  create(createWorkExperienceDto: CreateWorkExperienceDto) {
-    return 'This action adds a new workExperience';
+  constructor(private workExperienceRepository: WorkExperienceRespository) {}
+
+  create(createWorkExperienceDto: ICreateWorkExperienceProps) {
+    return this.workExperienceRepository.create(createWorkExperienceDto);
   }
 
-  findAll() {
-    return `This action returns all workExperience`;
+  findAll(userId: string) {
+    return this.workExperienceRepository.findMany(userId);
   }
 
   findOne(id: number) {
     return `This action returns a #${id} workExperience`;
   }
 
-  update(id: number, updateWorkExperienceDto: UpdateWorkExperienceDto) {
-    return `This action updates a #${id} workExperience`;
+  update(id: string, updateWorkExperienceDto: IUpdateWorkExperienceProps) {
+    return this.workExperienceRepository.updateById(
+      id,
+      updateWorkExperienceDto,
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} workExperience`;
+  remove(id: string) {
+    return this.workExperienceRepository.removeById(id);
   }
 }

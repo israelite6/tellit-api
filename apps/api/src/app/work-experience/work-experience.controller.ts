@@ -1,20 +1,38 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Request,
+} from '@nestjs/common';
 import { WorkExperienceService } from './work-experience.service';
 import { CreateWorkExperienceDto } from './dto/create-work-experience.dto';
 import { UpdateWorkExperienceDto } from './dto/update-work-experience.dto';
+import { IUpdateWorkExperienceProps } from './work-experience.interface';
 
-@Controller('work-experience')
+@Controller({ path: 'work-experience', version: '1' })
 export class WorkExperienceController {
   constructor(private readonly workExperienceService: WorkExperienceService) {}
 
   @Post()
-  create(@Body() createWorkExperienceDto: CreateWorkExperienceDto) {
-    return this.workExperienceService.create(createWorkExperienceDto);
+  create(
+    @Body() createWorkExperienceDto: CreateWorkExperienceDto,
+    @Request() req: any,
+  ) {
+    const userId = req.user.userId as string;
+    return this.workExperienceService.create({
+      ...createWorkExperienceDto,
+      userId,
+    });
   }
 
   @Get()
-  findAll() {
-    return this.workExperienceService.findAll();
+  findAll(@Request() req: any) {
+    const userId = req.user.userId as string;
+    return this.workExperienceService.findAll(userId);
   }
 
   @Get(':id')
@@ -23,12 +41,15 @@ export class WorkExperienceController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateWorkExperienceDto: UpdateWorkExperienceDto) {
-    return this.workExperienceService.update(+id, updateWorkExperienceDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateWorkExperienceDto: IUpdateWorkExperienceProps,
+  ) {
+    return this.workExperienceService.update(id, updateWorkExperienceDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.workExperienceService.remove(+id);
+    return this.workExperienceService.remove(id);
   }
 }
