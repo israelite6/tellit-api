@@ -14,6 +14,7 @@ import { TopicsModule } from './app/topics/topics.module';
 import { TopicCommentsModule } from './app/topic-comments/topic-comments.module';
 import { EducationHistoriesModule } from './app/education-histories/education-histories.module';
 import { WorkExperienceModule } from './app/work-experience/work-experience.module';
+import { TopicLikesModule } from './app/topic-likes/topic-likes.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { WorkExperienceModule } from './app/work-experience/work-experience.modu
     TopicCommentsModule,
     EducationHistoriesModule,
     WorkExperienceModule,
+    TopicLikesModule,
   ],
   controllers: [AppController],
   providers: [

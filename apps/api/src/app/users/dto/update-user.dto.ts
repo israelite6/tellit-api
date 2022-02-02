@@ -1,8 +1,9 @@
-import { IsNotEmpty, IsString, Length } from 'class-validator';
+import { EGender } from './../../../config/constants';
+import { IsEnum, IsIn, IsNotEmpty, IsString, Length } from 'class-validator';
 
 export class UpdateUserDto {
-  @IsString()
-  gender: string;
+  @IsEnum(EGender)
+  gender: EGender;
 
   @IsString()
   address: string;

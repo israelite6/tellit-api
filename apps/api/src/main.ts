@@ -57,3 +57,8 @@ async function bootstrap() {
   await app.listen(3900);
 }
 bootstrap();
+
+//for prisma to accept bigInt as seria
+BigInt.prototype.toJSON = function () {
+  return this.toString();
+};
