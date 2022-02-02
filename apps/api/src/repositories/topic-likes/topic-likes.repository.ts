@@ -2,10 +2,9 @@ import {
   IGetLikesProps,
   IUnlikesProps,
 } from './../../app/topic-likes/topic-likes.interface';
-import { ELikes } from './../../config/constants';
 import { PrismaService } from '../../services/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { Prisma, TopicLike } from '@prisma/client';
+import { ELikeType, Prisma, TopicLike } from '@prisma/client';
 
 @Injectable()
 export class TopicLikeRespository {
@@ -24,7 +23,11 @@ export class TopicLikeRespository {
     return inserted;
   }
 
-  findUserIdAndTopicId(userId: string, topicId: number, type: ELikes) {
+  findUserIdAndTopicId(
+    userId: string,
+    topicId: number | bigint,
+    type: ELikeType,
+  ) {
     return this.prismaService.topicLike.findMany({
       where: { AND: [{ userId }, { topicId }, { type }] },
     });
@@ -34,19 +37,19 @@ export class TopicLikeRespository {
     const [likes, insightful, beer, threeGbosa] =
       await this.prismaService.$transaction([
         this.prismaService.topicLike.count({
-          where: { AND: [{ userId }, { topicId }, { type: ELikes.LIKE }] },
+          where: { AND: [{ userId }, { topicId }, { type: ELikeType.LIKE }] },
         }),
         this.prismaService.topicLike.count({
           where: {
-            AND: [{ userId }, { topicId }, { type: ELikes.INSIGHTFUL }],
+            AND: [{ userId }, { topicId }, { type: ELikeType.INSIGHTFUL }],
           },
         }),
         this.prismaService.topicLike.count({
-          where: { AND: [{ userId }, { topicId }, { type: ELikes.BEER }] },
+          where: { AND: [{ userId }, { topicId }, { type: ELikeType.BEER }] },
         }),
         this.prismaService.topicLike.count({
           where: {
-            AND: [{ userId }, { topicId }, { type: ELikes.THREE_GBOSA }],
+            AND: [{ userId }, { topicId }, { type: ELikeType.THREE_GBOSA }],
           },
         }),
       ]);

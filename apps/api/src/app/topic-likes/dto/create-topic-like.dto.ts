@@ -1,8 +1,8 @@
-import { ELikes } from './../../../config/constants';
-import { IsEnum, IsIn, IsNotEmpty } from 'class-validator';
+import { IsEnum, IsNotEmpty } from 'class-validator';
+import { ELikeType } from '@prisma/client';
 
 export class CreateTopicLikeDto {
   @IsNotEmpty()
-  @IsEnum(ELikes)
-  type: ELikes;
+  @IsEnum(ELikeType)
+  type: ELikeType;
 }

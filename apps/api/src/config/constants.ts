@@ -16,3 +16,10 @@ export enum ELikes {
   THREE_GBOSA = 'THREE_GBOSA',
   BEER = 'BEER',
 }
+
+export enum LIKE {
+  LIKE = 'LIKE',
+  INSIGHTFUL = 'INSIGHTFUL',
+  THREE_GBOSA = 'THREE_GBOSA',
+  BEER = 'BEER',
+}
