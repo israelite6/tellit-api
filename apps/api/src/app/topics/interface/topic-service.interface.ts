@@ -11,5 +11,6 @@ export interface IFindAllTopic {
   meta: {
     total: number;
     page: number;
+    perPage: number;
   };
 }

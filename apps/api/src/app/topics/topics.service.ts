@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { PAGINATION_THRESHOLD } from '../../config/constants';
 import { TopicsRespository } from '../../repositories/topics/topics.repository';
 import { HelperService } from '../../services/helper/helper.service';
 import { CreateTopicDto } from './dto/create-topic.dto';
@@ -26,7 +27,10 @@ export class TopicsService {
       forumId: +query.forumId || undefined,
     });
 
-    return { topics, meta: { total, page: query.page } };
+    return {
+      topics,
+      meta: { total, page: query.page, perPage: PAGINATION_THRESHOLD },
+    };
   }
 
   findOne(id: number) {
