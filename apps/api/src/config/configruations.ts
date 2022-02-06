@@ -9,4 +9,5 @@ export default () => ({
   redisPort: parseInt(process.env.REDIS_PORT),
   sendGridApi: process.env.SEND_GRID_API,
   emailFrom: process.env.EMAIL_FROM,
+  env: process.env.ENV,
 });

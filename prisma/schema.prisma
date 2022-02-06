@@ -71,6 +71,7 @@ model User {
   WorkExperience   WorkExperience[]
   Like             Like[]
   @@map("users")
+  Fcm Fcm[]
 }
 
 enum Gender {
@@ -126,8 +127,8 @@ model TopicComment {
   updatedAt      DateTime? @map("updated_at")
   deletedAt      DateTime? @map("deleted_at")
 
-  @@map("topic_comments")
   Like Like[]
+  @@map("topic_comments")
 }
 
 model EducationHistory {
@@ -136,8 +137,8 @@ model EducationHistory {
   user       User      @relation(references: [id], fields: [userId], onDelete: Cascade)
   degree     String
   course     String
-  startAt    String  @map("start_at")
-  endAt      String? @map("end_at")
+  startAt    String    @map("start_at")
+  endAt      String?   @map("end_at")
   schoolName String    @map("school_name")
   isCurrent  Boolean   @map("is_current")
   createdAt  DateTime? @default(now()) @map("created_at")
@@ -153,8 +154,8 @@ model WorkExperience {
   user        User      @relation(references: [id], fields: [userId], onDelete: Cascade)
   title       String
   type        String
-  startAt     String  @map("start_at")
-  endAt       String? @map("end_at")
+  startAt     String    @map("start_at")
+  endAt       String?   @map("end_at")
   companyName String    @map("company_name")
   location    String
   isCurrent   Boolean   @map("is_current")
@@ -194,4 +195,24 @@ enum ELikeCategory {
   TOPIC_COMMENT
   ANSWER
   ANSWER_COMMENT
+}
+
+model Fcm {
+  id          String  @id @default(cuid())
+  deviceToken String  @unique @map("device_token")
+  os          EOs
+  userId      String? @map("user_id")
+  user        User?   @relation(references: [id], fields: [userId])
+
+  createdAt DateTime? @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("fcm")
+}
+
+enum EOs {
+  WEB
+  ANDROID
+  IOS
 }

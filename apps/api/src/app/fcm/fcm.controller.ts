@@ -1,15 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Request,
+} from '@nestjs/common';
 import { FcmService } from './fcm.service';
 import { CreateFcmDto } from './dto/create-fcm.dto';
 import { UpdateFcmDto } from './dto/update-fcm.dto';
 
-@Controller('fcm')
+@Controller({ version: '1', path: 'fcm' })
 export class FcmController {
   constructor(private readonly fcmService: FcmService) {}
 
   @Post()
-  create(@Body() createFcmDto: CreateFcmDto) {
-    return this.fcmService.create(createFcmDto);
+  create(@Body() createFcmDto: CreateFcmDto, @Request() req: any) {
+    const userId = req.user.userId;
+    return this.fcmService.create({ ...createFcmDto, userId });
   }
 
   @Get()

@@ -1,11 +1,15 @@
+import { FcmRespository } from './../../repositories/fcm/fcm.repository';
 import { Injectable } from '@nestjs/common';
 import { CreateFcmDto } from './dto/create-fcm.dto';
 import { UpdateFcmDto } from './dto/update-fcm.dto';
+import { ICreateFcmProps } from './fcm.interface';
 
 @Injectable()
 export class FcmService {
-  create(createFcmDto: CreateFcmDto) {
-    return 'This action adds a new fcm';
+  constructor(private fcmRepository: FcmRespository) {}
+
+  create(createFcmDto: ICreateFcmProps) {
+    return this.fcmRepository.create(createFcmDto);
   }
 
   findAll() {
