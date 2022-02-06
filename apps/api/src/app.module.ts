@@ -14,7 +14,8 @@ import { TopicsModule } from './app/topics/topics.module';
 import { TopicCommentsModule } from './app/topic-comments/topic-comments.module';
 import { EducationHistoriesModule } from './app/education-histories/education-histories.module';
 import { WorkExperienceModule } from './app/work-experience/work-experience.module';
-import { TopicLikesModule } from './app/topic-likes/topic-likes.module';
+import { LikesModule } from './app/likes/likes.module';
+import { FcmModule } from './app/fcm/fcm.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { TopicLikesModule } from './app/topic-likes/topic-likes.module';
     TopicCommentsModule,
     EducationHistoriesModule,
     WorkExperienceModule,
-    TopicLikesModule,
+    LikesModule,
+    FcmModule,
   ],
   controllers: [AppController],
   providers: [

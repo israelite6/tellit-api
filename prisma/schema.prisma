@@ -69,7 +69,7 @@ model User {
   Comment          TopicComment[]
   EducationHistory EducationHistory[]
   WorkExperience   WorkExperience[]
-  TopicLike        TopicLike[]
+  Like             Like[]
   @@map("users")
 }
 
@@ -108,8 +108,8 @@ model Topic {
   updatedAt   DateTime? @map("updated_at")
   deletedAt   DateTime? @map("deleted_at")
 
-  Comment   TopicComment[]
-  TopicLike TopicLike[]
+  Comment TopicComment[]
+  Like    Like[]
   @@map("topics")
 }
 
@@ -127,6 +127,7 @@ model TopicComment {
   deletedAt      DateTime? @map("deleted_at")
 
   @@map("topic_comments")
+  Like Like[]
 }
 
 model EducationHistory {
@@ -135,8 +136,8 @@ model EducationHistory {
   user       User      @relation(references: [id], fields: [userId], onDelete: Cascade)
   degree     String
   course     String
-  startAt    DateTime  @map("start_at")
-  endAt      DateTime? @map("end_at")
+  startAt    String  @map("start_at")
+  endAt      String? @map("end_at")
   schoolName String    @map("school_name")
   isCurrent  Boolean   @map("is_current")
   createdAt  DateTime? @default(now()) @map("created_at")
@@ -152,8 +153,8 @@ model WorkExperience {
   user        User      @relation(references: [id], fields: [userId], onDelete: Cascade)
   title       String
   type        String
-  startAt     DateTime  @map("start_at")
-  endAt       DateTime? @map("end_at")
+  startAt     String  @map("start_at")
+  endAt       String? @map("end_at")
   companyName String    @map("company_name")
   location    String
   isCurrent   Boolean   @map("is_current")
@@ -164,18 +165,21 @@ model WorkExperience {
   @@map("work_experiences")
 }
 
-model TopicLike {
-  id        String    @id @default(cuid())
-  userId    String    @map("user_id")
-  user      User      @relation(references: [id], fields: [userId], onDelete: Cascade)
-  topicId   BigInt    @map("topic_id")
-  topic     Topic     @relation(references: [id], fields: [topicId])
-  type      ELikeType
-  createdAt DateTime? @default(now()) @map("created_at")
-  updatedAt DateTime? @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
+model Like {
+  id             String        @id @default(cuid())
+  userId         String        @map("user_id")
+  user           User          @relation(references: [id], fields: [userId], onDelete: Cascade)
+  topicId        BigInt?       @map("topic_id")
+  topic          Topic?        @relation(references: [id], fields: [topicId])
+  topicCommentId String?
+  topicComment   TopicComment? @relation(references: [id], fields: [topicCommentId])
+  type           ELikeType
+  category       ELikeCategory
+  createdAt      DateTime?     @default(now()) @map("created_at")
+  updatedAt      DateTime?     @map("updated_at")
+  deletedAt      DateTime?     @map("deleted_at")
 
-  @@map("topic_likes")
+  @@map("likes")
 }
 
 enum ELikeType {
@@ -183,4 +187,11 @@ enum ELikeType {
   INSIGHTFUL
   THREE_GBOSA
   BEER
+}
+
+enum ELikeCategory {
+  TOPIC
+  TOPIC_COMMENT
+  ANSWER
+  ANSWER_COMMENT
 }

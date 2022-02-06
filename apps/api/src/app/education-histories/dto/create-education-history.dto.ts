@@ -18,8 +18,8 @@ export class CreateEducationHistoryDto {
 
   @IsDateString()
   @IsNotEmpty()
-  startAt;
+  startAt: string;
 
   @IsDateString()
-  endAt;
+  endAt: string;
 }

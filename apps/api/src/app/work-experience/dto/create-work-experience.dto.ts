@@ -15,10 +15,10 @@ export class CreateWorkExperienceDto {
 
   @IsDateString()
   @IsNotEmpty()
-  startAt: Date;
+  startAt: string;
 
   @IsDateString()
-  endAt: Date;
+  endAt: string;
 
   @IsString()
   @IsNotEmpty()
