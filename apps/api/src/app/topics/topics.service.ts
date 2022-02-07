@@ -29,7 +29,12 @@ export class TopicsService {
 
     return {
       topics,
-      meta: { total, page: query.page, perPage: PAGINATION_THRESHOLD },
+      meta: {
+        total,
+        page: query.page,
+        perPage: PAGINATION_THRESHOLD,
+        numberOfPages: Math.ceil(total / PAGINATION_THRESHOLD),
+      },
     };
   }
 

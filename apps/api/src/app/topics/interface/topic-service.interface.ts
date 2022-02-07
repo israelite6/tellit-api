@@ -12,5 +12,6 @@ export interface IFindAllTopic {
     total: number;
     page: number;
     perPage: number;
+    numberOfPages: number;
   };
 }
