@@ -35,6 +35,9 @@ export class TopicCommentsRespository {
           user: {
             select: {
               username: true,
+              firstName: true,
+              lastName: true,
+              photoUrl: true,
             },
           },
         },

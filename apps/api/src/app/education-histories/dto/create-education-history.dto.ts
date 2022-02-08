@@ -16,10 +16,17 @@ export class CreateEducationHistoryDto {
   @IsBoolean()
   isCurrent: boolean;
 
-  @IsDateString()
+  @IsString()
   @IsNotEmpty()
-  startAt: string;
+  startMonth: string;
 
-  @IsDateString()
-  endAt: string;
+  @IsString()
+  @IsNotEmpty()
+  startYear: string;
+
+  @IsString()
+  endMonth: string;
+
+  @IsString()
+  endYear: string;
 }

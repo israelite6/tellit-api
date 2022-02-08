@@ -30,4 +30,7 @@ export class UpdateUserDto {
   @Length(2, 20)
   @IsString()
   middleName: string;
+
+  @IsString()
+  photoUrl: string;
 }

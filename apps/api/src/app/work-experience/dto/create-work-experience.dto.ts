@@ -13,12 +13,19 @@ export class CreateWorkExperienceDto {
   @IsNotEmpty()
   type: string;
 
-  @IsDateString()
+  @IsString()
   @IsNotEmpty()
-  startAt: string;
+  startMonth: string;
 
-  @IsDateString()
-  endAt: string;
+  @IsString()
+  @IsNotEmpty()
+  startYear: string;
+
+  @IsString()
+  endMonth: string;
+
+  @IsString()
+  endYear: string;
 
   @IsString()
   @IsNotEmpty()

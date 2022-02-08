@@ -42,6 +42,7 @@ export class UsersRespository {
         middleName: true,
         username: true,
         id: true,
+        photoUrl: true,
       },
     });
 

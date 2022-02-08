@@ -7,6 +7,7 @@ import { TopicCommentsRespository } from './../../repositories/topics-comments/t
 import { Injectable, Query } from '@nestjs/common';
 import { CreateTopicCommentDto } from './dto/create-topic-comment.dto';
 import { UpdateTopicCommentDto } from './dto/update-topic-comment.dto';
+import { PAGINATION_THRESHOLD } from '../../config/constants';
 
 @Injectable()
 export class TopicCommentsService {
@@ -19,12 +20,23 @@ export class TopicCommentsService {
     return this.topicCommentRepository.create(data);
   }
 
-  findAll(data: IFindManyTopicCommentProps) {
-    return this.topicCommentRepository.findMany({
-      ...this.helperService.paginate(data.page),
-      topicId: data.topicId,
-      topicCommentId: data.topicCommentId,
-    });
+  async findAll(data: IFindManyTopicCommentProps) {
+    const { total, topicComments } = await this.topicCommentRepository.findMany(
+      {
+        ...this.helperService.paginate(data.page),
+        topicId: data.topicId,
+        topicCommentId: data.topicCommentId,
+      },
+    );
+    return {
+      topicComments,
+      meta: {
+        total,
+        perPage: PAGINATION_THRESHOLD,
+        currentPage: data.page,
+        numberOfPages: Math.ceil(total / PAGINATION_THRESHOLD),
+      },
+    };
   }
 
   findOne(id: number) {
