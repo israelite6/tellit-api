@@ -10,7 +10,7 @@ export interface IFindAllTopic {
   topics: Partial<Topic>[];
   meta: {
     total: number;
-    page: number;
+    currentPage: number;
     perPage: number;
     numberOfPages: number;
   };

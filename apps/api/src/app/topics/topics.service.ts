@@ -31,7 +31,7 @@ export class TopicsService {
       topics,
       meta: {
         total,
-        page: query.page,
+        currentPage: query.page,
         perPage: PAGINATION_THRESHOLD,
         numberOfPages: Math.ceil(total / PAGINATION_THRESHOLD),
       },
