@@ -58,6 +58,7 @@ model User {
   state                         String?
   country                       String?
   photoUrl                      String?   @map("photo_url")
+  about                         String?
   forgetPasswordToken           String?   @map("forget_password_token")
   forgetPasswordTokenExpiration DateTime? @map("forget_password_token_expiration")
   roleId                        String?   @map("role_id")

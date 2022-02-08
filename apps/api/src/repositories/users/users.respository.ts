@@ -42,7 +42,6 @@ export class UsersRespository {
         middleName: true,
         username: true,
         id: true,
-        photoUrl: true,
       },
     });
 
@@ -99,6 +98,8 @@ export class UsersRespository {
         password: false,
         middleName: true,
         username: true,
+        about: true,
+        photoUrl: true,
         id: true,
       },
     });
