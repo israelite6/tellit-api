@@ -32,6 +32,7 @@ export class TopicCommentsRespository {
           isAnonymous: true,
           createdAt: true,
           id: true,
+          topicCommentId: true,
           user: {
             select: {
               username: true,
@@ -47,7 +48,7 @@ export class TopicCommentsRespository {
           AND: [
             { topicId },
             ...(topicCommentId
-              ? [{ NOT: [{ topicCommentId: null }] }]
+              ? [{ topicCommentId }]
               : [{ topicCommentId: null }]),
           ],
         },
