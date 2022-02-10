@@ -6,12 +6,16 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Request,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { CreateUserResponseInterface } from './users.interface';
+import {
+  CreateUserResponseInterface,
+  IFindMentionDto,
+} from './users.interface';
 import { Public } from '../../decorators/public.decorator';
 
 @Controller({ version: '1', path: 'users' })
@@ -36,6 +40,15 @@ export class UsersController {
   remove(@Request() req) {
     console.log(req.user);
     return this.usersService.remove(req.user.userId);
+  }
+
+  @Get('/mentioned')
+  findMention(@Query() { search, isPaginated, page }: IFindMentionDto) {
+    return this.usersService.findUserForMention({
+      search,
+      isPaginated: isPaginated === 'true' ? true : false,
+      page: +page,
+    });
   }
 
   @Get(':id/id')

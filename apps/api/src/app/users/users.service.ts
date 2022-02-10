@@ -7,9 +7,11 @@ import { User } from '@prisma/client';
 import { Queue } from 'bull';
 import { InjectQueue } from '@nestjs/bull';
 import {
+  PAGINATION_THRESHOLD,
   SEND_EMAIL_QUEUE_NAME,
   SIGNUP_EMAIL_JOB,
 } from '../../config/constants';
+import { IFindMentionDto, IFindMentionProps } from './users.interface';
 
 @Injectable()
 export class UsersService {
@@ -28,6 +30,19 @@ export class UsersService {
       name: `${user.firstName} ${user.lastName}`,
     });
     return this.helperService.signJwt(user);
+  }
+
+  async findUserForMention({ search, page, isPaginated }: IFindMentionProps) {
+    const { users, total } = await this.usersRepository.findUserForMention({
+      search,
+      ...this.helperService.paginate(page),
+      isPaginated,
+    });
+
+    return {
+      users,
+      meta: { currentPage: page, total, perPage: PAGINATION_THRESHOLD },
+    };
   }
 
   findAll() {

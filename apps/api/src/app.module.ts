@@ -17,6 +17,7 @@ import { WorkExperienceModule } from './app/work-experience/work-experience.modu
 import { LikesModule } from './app/likes/likes.module';
 import { FcmModule } from './app/fcm/fcm.module';
 import { DoSpacesModule } from './app/do/do-spaces.module';
+import { NotificationsModule } from './app/notifications/notifications.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { DoSpacesModule } from './app/do/do-spaces.module';
     LikesModule,
     FcmModule,
     DoSpacesModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [

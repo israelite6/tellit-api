@@ -1,6 +1,7 @@
 import {
   IUpdateUserTokeinByUserIdProps,
   IUpdatePasswordByIdProps,
+  IFindMentionedUsersProps,
 } from './user.respository.interface';
 import { PrismaService } from '../../services/prisma/prisma.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
@@ -105,6 +106,62 @@ export class UsersRespository {
     });
 
     return user;
+  }
+
+  async findUserForMention({
+    search,
+    take,
+    skip,
+    isPaginated,
+  }: IFindMentionedUsersProps) {
+    if (isPaginated) {
+      const [users, total] = await this.prismaService.$transaction([
+        this.prismaService.user.findMany({
+          where: {
+            OR: [
+              { firstName: { contains: search } },
+              { lastName: { contains: search } },
+              { username: { contains: search } },
+            ],
+          },
+          skip,
+          take,
+          select: {
+            lastName: true,
+            firstName: true,
+            username: true,
+            id: true,
+          },
+        }),
+        this.prismaService.user.count({
+          where: {
+            OR: [
+              { firstName: { contains: search } },
+              { lastName: { contains: search } },
+              { username: { contains: search } },
+            ],
+          },
+        }),
+      ]);
+      return { users, total };
+    }
+    const users = await this.prismaService.user.findMany({
+      where: {
+        OR: [
+          { firstName: { contains: search } },
+          { lastName: { contains: search } },
+          { username: { contains: search } },
+        ],
+      },
+      select: {
+        lastName: true,
+        firstName: true,
+        username: true,
+        id: true,
+      },
+    });
+
+    return { users };
   }
 
   async updateById(id: string, data: Partial<User>): Promise<Partial<User>> {

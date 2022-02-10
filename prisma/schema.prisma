@@ -219,15 +219,16 @@ model Fcm {
 }
 
 model Notification {
-  id          String    @id @default(cuid())
-  userId      String?   @map("user_id")
-  user        User?     @relation(references: [id], fields: [userId])
+  id          String            @id @default(cuid())
+  userId      String?           @map("user_id")
+  user        User?             @relation(references: [id], fields: [userId])
   url         String?
   title       String
   description String?
-  createdAt   DateTime? @default(now()) @map("created_at")
-  updatedAt   DateTime? @map("updated_at")
-  deletedAt   DateTime? @map("deleted_at")
+  type        ENotificationType
+  createdAt   DateTime?         @default(now()) @map("created_at")
+  updatedAt   DateTime?         @map("updated_at")
+  deletedAt   DateTime?         @map("deleted_at")
 
   @@map("notifications")
 }
@@ -236,4 +237,10 @@ enum EOs {
   WEB
   ANDROID
   IOS
+}
+
+enum ENotificationType {
+  TOPIC
+  MENTION
+  COMMENT
 }

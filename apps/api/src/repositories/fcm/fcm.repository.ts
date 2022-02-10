@@ -8,8 +8,22 @@ export class FcmRespository {
 
   async create(data: Prisma.FcmUncheckedCreateInput) {
     console.log(data);
+    const getExist = await this.findManyByUserIdANDFcm(
+      data.userId,
+      data.deviceToken,
+    );
+    if (getExist.length > 0) {
+      return {};
+    }
     const inserted = await this.prismaService.fcm.create({ data });
     return inserted;
+  }
+
+  async findManyByUserIdANDFcm(userId: string, deviceToken: string) {
+    const fcms = await this.prismaService.fcm.findMany({
+      where: { AND: [{ userId }, { deviceToken }] },
+    });
+    return fcms;
   }
 
   async findMany(userId: string): Promise<Array<Partial<Fcm>>> {

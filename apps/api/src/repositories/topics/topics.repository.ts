@@ -38,6 +38,12 @@ export class TopicsRespository {
           createdAt: true,
           id: true,
           views: true,
+          _count: {
+            select: {
+              Like: true,
+              Comment: true,
+            },
+          },
           user: {
             select: {
               username: true,
