@@ -34,6 +34,14 @@ export class NotificationsRespository {
           url: true,
           createdAt: true,
           type: true,
+          user: {
+            select: {
+              username: true,
+              photoUrl: true,
+              firstName: true,
+              lastName: true,
+            },
+          },
         },
         skip,
         take,

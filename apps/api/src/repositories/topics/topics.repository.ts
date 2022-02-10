@@ -83,6 +83,9 @@ export class TopicsRespository {
         user: {
           select: {
             username: true,
+            photoUrl: true,
+            firstName: true,
+            lastName: true,
           },
         },
         forum: {
