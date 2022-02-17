@@ -10,4 +10,5 @@ export interface IFindManyTopicCommentProps {
   topicId: number;
   page: number;
   topicCommentId?: string;
+  userId?: string;
 }

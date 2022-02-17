@@ -9,6 +9,7 @@ export interface IFindManyTopicCommentProps {
   take: number;
   topicId: number;
   topicCommentId?: string;
+  userId?: string;
 }
 
 export interface IFindManyTopicComment {

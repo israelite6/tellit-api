@@ -8,6 +8,7 @@ export interface IFindManyTopicProps {
   skip: number;
   take: number;
   forumId?: number;
+  userId?: string;
 }
 
 export interface IFindManyTopic {

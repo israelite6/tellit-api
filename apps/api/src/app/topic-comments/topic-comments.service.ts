@@ -8,6 +8,7 @@ import { Injectable, Query } from '@nestjs/common';
 import { CreateTopicCommentDto } from './dto/create-topic-comment.dto';
 import { UpdateTopicCommentDto } from './dto/update-topic-comment.dto';
 import { PAGINATION_THRESHOLD } from '../../config/constants';
+import { Like, TopicComment } from '@prisma/client';
 
 @Injectable()
 export class TopicCommentsService {
@@ -26,10 +27,23 @@ export class TopicCommentsService {
         ...this.helperService.paginate(data.page),
         topicId: data.topicId,
         topicCommentId: data.topicCommentId,
+        userId: data.userId,
       },
     );
+
+    const mappedComment = topicComments.map(
+      (comment: TopicComment & { Like: Like[] }) => {
+        const isLiked = comment.Like?.length > 0 ? true : false;
+        return {
+          ...comment,
+          Like: undefined,
+          isLiked,
+        };
+      },
+    );
+
     return {
-      topicComments,
+      topicComments: mappedComment,
       meta: {
         total,
         perPage: PAGINATION_THRESHOLD,

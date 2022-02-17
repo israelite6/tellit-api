@@ -1,4 +1,5 @@
 import { Topic } from '@prisma/client';
+import { GetTopicDto } from '../dto/get-topic.dto';
 export interface ICreateTopicProps {
   title: string;
   description: string;
@@ -14,4 +15,8 @@ export interface IFindAllTopic {
     perPage: number;
     numberOfPages: number;
   };
+}
+
+export interface IGetTopicProps extends GetTopicDto {
+  userId?: string;
 }

@@ -102,6 +102,12 @@ export class UsersRespository {
         about: true,
         photoUrl: true,
         id: true,
+        Fcm: {
+          select: {
+            deviceToken: true,
+            os: true,
+          },
+        },
       },
     });
 

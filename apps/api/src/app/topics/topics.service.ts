@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Like, Topic } from '@prisma/client';
 import { PAGINATION_THRESHOLD } from '../../config/constants';
 import { TopicsRespository } from '../../repositories/topics/topics.repository';
 import { HelperService } from '../../services/helper/helper.service';
@@ -8,6 +9,7 @@ import { UpdateTopicDto } from './dto/update-topic.dto';
 import {
   ICreateTopicProps,
   IFindAllTopic,
+  IGetTopicProps,
 } from './interface/topic-service.interface';
 
 @Injectable()
@@ -21,14 +23,24 @@ export class TopicsService {
     return this.topicsRepository.create(createTopicDto);
   }
 
-  async findAll(query: GetTopicDto): Promise<IFindAllTopic> {
+  async findAll(query: IGetTopicProps): Promise<IFindAllTopic> {
     const { topics, total } = await this.topicsRepository.findMany({
       ...this.helperService.paginate(query.page),
       forumId: +query.forumId || undefined,
+      userId: query.userId,
+    });
+
+    const mappedTopic = topics.map((topic: Topic & { Like: Like[] }) => {
+      const isLiked = topic.Like?.length > 0 ? true : false;
+      return {
+        ...topic,
+        Like: undefined,
+        isLiked,
+      };
     });
 
     return {
-      topics,
+      topics: mappedTopic,
       meta: {
         total,
         currentPage: query.page,
@@ -55,6 +67,12 @@ export class TopicsService {
 
   async views(id: number) {
     await this.topicsRepository.increaseViewById(id);
+
+    return { description: 'Operation successfully' };
+  }
+
+  async share(id: number) {
+    await this.topicsRepository.increaseShareById(id);
 
     return { description: 'Operation successfully' };
   }

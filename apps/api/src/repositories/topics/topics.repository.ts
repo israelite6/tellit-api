@@ -26,6 +26,7 @@ export class TopicsRespository {
     skip,
     take,
     forumId,
+    userId,
   }: IFindManyTopicProps): Promise<IFindManyTopic> {
     const [topics, total] = await this.prismaService.$transaction([
       this.prismaService.topic.findMany({
@@ -38,6 +39,7 @@ export class TopicsRespository {
           createdAt: true,
           id: true,
           views: true,
+          share: true,
           _count: {
             select: {
               Like: true,
@@ -58,6 +60,13 @@ export class TopicsRespository {
               id: true,
             },
           },
+          ...(userId
+            ? {
+                Like: {
+                  where: { userId },
+                },
+              }
+            : {}),
         },
         skip,
         take,
@@ -80,6 +89,7 @@ export class TopicsRespository {
         description: true,
         createdAt: true,
         id: true,
+        share: true,
         user: {
           select: {
             username: true,
@@ -118,6 +128,13 @@ export class TopicsRespository {
     return this.prismaService.topic.update({
       where: { id },
       data: { views: { increment: 1 } },
+    });
+  }
+
+  async increaseShareById(id: number) {
+    return this.prismaService.topic.update({
+      where: { id },
+      data: { share: { increment: 1 } },
     });
   }
 }

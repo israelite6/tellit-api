@@ -34,11 +34,17 @@ export class TopicCommentsController {
 
   @Public()
   @Get('/:topicId/comments')
-  findAll(@Param('topicId') topicId: number, @Query() query: any) {
+  findAll(
+    @Param('topicId') topicId: number,
+    @Query() query: any,
+    @Request() req: any,
+  ) {
+    const userId = req.user.userId as string;
     return this.topicCommentsService.findAll({
       topicId,
       page: query.page,
       topicCommentId: query.topicCommentId,
+      userId,
     });
   }
 

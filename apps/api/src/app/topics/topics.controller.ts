@@ -31,8 +31,9 @@ export class TopicsController {
 
   @Public()
   @Get()
-  findAll(@Query() query: GetTopicDto) {
-    return this.topicsService.findAll(query);
+  findAll(@Query() query: GetTopicDto, @Request() req: any) {
+    const userId = req?.user?.userId as string;
+    return this.topicsService.findAll({ userId, ...query });
   }
 
   @Public()
@@ -51,8 +52,15 @@ export class TopicsController {
     return this.topicsService.remove(+id);
   }
 
+  @Public()
   @Patch('/views/:id')
   async views(@Param('id') id: string) {
     return this.topicsService.views(+id);
+  }
+
+  @Public()
+  @Patch('/share/:id')
+  async share(@Param('id') id: string) {
+    return this.topicsService.share(+id);
   }
 }
