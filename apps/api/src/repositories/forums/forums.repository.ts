@@ -29,6 +29,11 @@ export class ForumsRespository {
         iconUrl: true,
         bannarUrl: true,
         id: true,
+        _count: {
+          select: {
+            Topic: true,
+          },
+        },
       },
     });
     return forums;
