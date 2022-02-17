@@ -39,7 +39,7 @@ export class TopicCommentsController {
     @Query() query: any,
     @Request() req: any,
   ) {
-    const userId = req.user.userId as string;
+    const userId = req?.user?.userId as string;
     return this.topicCommentsService.findAll({
       topicId,
       page: query.page,
