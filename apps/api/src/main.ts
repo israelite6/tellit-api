@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { PrismaService } from './services/prisma/prisma.service';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { TransformResponseInterceptor } from './interceptor/response-transform.interceptor';
-
+import * as morgan from 'morgan';
 import { createBullBoard } from '@bull-board/api';
 import { BullMQAdapter as BullAdapter } from '@bull-board/api/bullMQAdapter';
 import { ExpressAdapter } from '@bull-board/express';
@@ -15,6 +15,27 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: ['log', 'error', 'warn', 'debug', 'verbose'],
   });
+  app.use(
+    morgan(function (tokens, req: any, res) {
+      return [
+        tokens.method(req, res),
+        tokens.url(req, res),
+        tokens.status(req, res),
+        tokens.res(req, res, 'content-length'),
+        '-',
+        tokens['response-time'](req, res),
+        'ms ',
+        'start time ',
+        req._startTime,
+        ' Params ',
+        JSON.stringify(req.params),
+        ' query ',
+        JSON.stringify(req.query),
+        ' body ',
+        JSON.stringify(req.body),
+      ].join(' ');
+    }),
+  );
 
   app.enableVersioning({
     type: VersioningType.URI,
