@@ -19,10 +19,11 @@ export class DoSpacesService {
     const fileName = `${Date.now()}-${file.originalname}`;
 
     // Return a promise that resolves only when the file upload is complete
+    ///*${this.configService.get<string>('env')}`*/
     return new Promise((resolve, reject) => {
       this.s3.putObject(
         {
-          Bucket: `tellit/${this.configService.get<string>('env')}`,
+          Bucket: 'tellit/dev',
           Key: fileName,
           Body: file.buffer,
           ACL: 'public-read',
@@ -30,9 +31,7 @@ export class DoSpacesService {
         (error: AWS.AWSError) => {
           if (!error) {
             resolve(
-              `https://tellit.sfo3.digitaloceanspaces.com/${this.configService.get<string>(
-                'env',
-              )}/${fileName}`,
+              `https://tellit.sfo3.digitaloceanspaces.com/dev/${fileName}`,
             );
           } else {
             console.log(error);
