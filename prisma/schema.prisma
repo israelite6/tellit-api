@@ -109,6 +109,7 @@ model Topic {
   views       BigInt?   @default(0)
   share       BigInt?   @default(0)
   isVisible   Boolean?  @default(true)
+  mention     String?
   createdAt   DateTime? @default(now()) @map("created_at")
   updatedAt   DateTime? @map("updated_at")
   deletedAt   DateTime? @map("deleted_at")
@@ -127,6 +128,7 @@ model TopicComment {
   comment        String
   isAnonymous    Boolean?  @default(false) @map("is_anonymous")
   topicCommentId String?   @map("topic_comment_id")
+  mention        String?
   createdAt      DateTime? @default(now()) @map("created_at")
   updatedAt      DateTime? @map("updated_at")
   deletedAt      DateTime? @map("deleted_at")

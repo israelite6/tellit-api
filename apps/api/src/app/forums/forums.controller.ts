@@ -28,6 +28,12 @@ export class ForumsController {
   }
 
   @Public()
+  @Get('/trending')
+  trending() {
+    return this.forumsService.findTrending();
+  }
+
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.forumsService.findOne(+id);

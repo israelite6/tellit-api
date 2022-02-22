@@ -15,6 +15,10 @@ export class ForumsService {
     return this.forumsRepository.findMany();
   }
 
+  findTrending() {
+    return this.forumsRepository.findMany();
+  }
+
   findOne(id: number) {
     return this.forumsRepository.findOneById(id);
   }

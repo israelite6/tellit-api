@@ -10,6 +10,7 @@ import {
   ICreateTopicProps,
   IFindAllTopic,
   IGetTopicProps,
+  IRelatedPostProps,
 } from './interface/topic-service.interface';
 
 @Injectable()
@@ -50,8 +51,29 @@ export class TopicsService {
     };
   }
 
-  findOne(id: number) {
-    return this.topicsRepository.findOneById(id);
+  async findTrending(query: IGetTopicProps): Promise<any> {
+    const topics = await this.topicsRepository.findManyTrending({
+      ...this.helperService.paginate(query.page),
+      forumId: +query.forumId || undefined,
+      userId: query.userId,
+    });
+    return topics;
+  }
+
+  async findRelated({ id }: IRelatedPostProps): Promise<any> {
+    const topics = await this.topicsRepository.findManyRelated({});
+    return topics;
+  }
+
+  async findOne(id: number, userId: string) {
+    console.log(userId);
+    const topic = (await this.topicsRepository.findOneById(
+      id,
+      userId,
+    )) as Topic & { isLiked: boolean; Like: Like[] };
+    topic.isLiked = topic.Like.length > 0 ? true : false;
+    delete topic.Like;
+    return topic;
   }
 
   async update(id: number, updateTopicDto: UpdateTopicDto) {

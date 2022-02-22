@@ -18,4 +18,7 @@ export class CreateTopicDto {
 
   @IsBoolean()
   isVisible: boolean;
+
+  @IsString()
+  mention: string;
 }

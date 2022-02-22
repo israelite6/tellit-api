@@ -17,10 +17,11 @@ export class NotificationsService {
     return 'This action adds a new notification';
   }
 
-  async findAll({ page }: IQueryNotificationDto) {
+  async findAll({ page, type }: IQueryNotificationDto) {
     const { notifications, total } = await this.notificationRepository.findMany(
       {
         ...this.helperService.paginate(+page),
+        type,
       },
     );
     return {

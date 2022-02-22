@@ -20,3 +20,8 @@ export interface IFindAllTopic {
 export interface IGetTopicProps extends GetTopicDto {
   userId?: string;
 }
+
+export interface IRelatedPostProps {
+  userId?: string;
+  id: number;
+}

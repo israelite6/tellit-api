@@ -10,4 +10,7 @@ export class CreateTopicCommentDto {
 
   @IsString()
   topicCommentId: string;
+
+  @IsString()
+  mention: string;
 }

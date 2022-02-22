@@ -37,9 +37,25 @@ export class TopicsController {
   }
 
   @Public()
+  @Get('/trending')
+  findTrending(@Query() query: GetTopicDto, @Request() req: any) {
+    const userId = req?.user?.userId as string;
+    return this.topicsService.findTrending({ userId, ...query });
+  }
+
+  @Public()
+  @Get('/related/:id')
+  findRelated(@Param() id: string, @Request() req: any) {
+    const userId = req?.user?.userId as string;
+    return this.topicsService.findRelated({ userId, id: +id });
+  }
+
+  @Public()
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.topicsService.findOne(+id);
+  findOne(@Param('id') id: string, @Request() req: any) {
+    const userId = req?.user?.userId as string;
+    console.log(req.user);
+    return this.topicsService.findOne(+id, userId);
   }
 
   @Patch(':id')

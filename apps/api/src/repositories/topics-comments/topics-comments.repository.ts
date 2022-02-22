@@ -40,6 +40,7 @@ export class TopicCommentsRespository {
               firstName: true,
               lastName: true,
               photoUrl: true,
+              id: true,
             },
           },
           _count: {

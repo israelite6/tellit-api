@@ -25,6 +25,7 @@ export class NotificationsRespository {
   async findMany({
     skip,
     take,
+    type,
   }: IFindManyNotificationProps): Promise<IFindManyNotification> {
     const [notifications, total] = await this.prismaService.$transaction([
       this.prismaService.notification.findMany({
@@ -45,6 +46,7 @@ export class NotificationsRespository {
         },
         skip,
         take,
+        where: type ? { type } : {},
       }),
       this.prismaService.notification.count({}),
     ]);
