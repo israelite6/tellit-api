@@ -11,7 +11,9 @@ describe('QueueWorkerController', () => {
       providers: [QueueWorkerService],
     }).compile();
 
-    queueWorkerController = app.get<QueueWorkerController>(QueueWorkerController);
+    queueWorkerController = app.get<QueueWorkerController>(
+      QueueWorkerController,
+    );
   });
 
   describe('root', () => {

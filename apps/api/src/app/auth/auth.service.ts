@@ -1,6 +1,5 @@
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 import { UsersRespository } from '../../repositories/users/users.respository';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { HelperService } from '../../services/helper/helper.service';

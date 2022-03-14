@@ -13,7 +13,7 @@ export class UsersRespository {
 
   async create(data: Prisma.UserCreateInput) {
     try {
-      return await this.prismaService.user.create({ data });
+      return this.prismaService.user.create({ data });
     } catch (e) {
       const [target] = e.meta.target;
       if (e.code === 'P2002' && target === 'email') {

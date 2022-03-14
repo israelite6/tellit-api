@@ -18,6 +18,7 @@ import { LikesModule } from './app/likes/likes.module';
 import { FcmModule } from './app/fcm/fcm.module';
 import { DoSpacesModule } from './app/do/do-spaces.module';
 import { NotificationsModule } from './app/notifications/notifications.module';
+import { SpacesModule } from './app/spaces/spaces.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { NotificationsModule } from './app/notifications/notifications.module';
     FcmModule,
     DoSpacesModule,
     NotificationsModule,
+    SpacesModule,
   ],
   controllers: [AppController],
   providers: [
