@@ -27,3 +27,8 @@ export interface IUpdateQuestionProps {
   id: number;
   data: UpdateQuestionDto;
 }
+
+export interface IFollowQuestionProps {
+  id: number;
+  userId: string;
+}

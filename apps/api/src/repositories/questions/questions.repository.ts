@@ -43,6 +43,11 @@ export class QuestionsRespository {
           question: true,
           createdAt: true,
           userId: true,
+          _count: {
+            select: {
+              FollowQuestion: true,
+            },
+          },
           user: {
             select: {
               firstName: true,
@@ -78,6 +83,11 @@ export class QuestionsRespository {
         question: true,
         createdAt: true,
         userId: true,
+        _count: {
+          select: {
+            FollowQuestion: true,
+          },
+        },
         user: {
           select: {
             firstName: true,
@@ -106,6 +116,11 @@ export class QuestionsRespository {
         question: true,
         createdAt: true,
         userId: true,
+        _count: {
+          select: {
+            FollowQuestion: true,
+          },
+        },
         user: {
           select: {
             firstName: true,

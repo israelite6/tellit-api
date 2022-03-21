@@ -60,4 +60,18 @@ export class QuestionsController {
   remove(@Param('id') id: string) {
     return this.questionsService.remove(+id);
   }
+
+  @Post(':id/follow')
+  follow(@Param('id') id: string, @Request() req: any) {
+    const userId = req.user.userId;
+
+    return this.questionsService.follow({ userId, id: +id });
+  }
+
+  @Delete(':id/follow')
+  unfollow(@Param('id') id: string, @Request() req: any) {
+    const userId = req.user.userId;
+
+    return this.questionsService.unfollow({ userId, id: +id });
+  }
 }

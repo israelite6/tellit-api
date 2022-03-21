@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PAGINATION_THRESHOLD } from '../../config/constants';
+import { FollowQuestionRespository } from '../../repositories/follow-question/follow-question.repository';
 import { QuestionsRespository } from '../../repositories/questions/questions.repository';
 import { HelperService } from '../../services/helper/helper.service';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 import {
   ICreateQuestionProp,
+  IFollowQuestionProps,
   IGetQuestionsProps,
   IGetRelatedQuestionsProps,
 } from './question.interface';
@@ -14,6 +16,7 @@ export class QuestionsService {
   constructor(
     private questionsRepository: QuestionsRespository,
     private helper: HelperService,
+    private followQuestion: FollowQuestionRespository,
   ) {}
 
   create(createQuestionDto: ICreateQuestionProp) {
@@ -53,5 +56,16 @@ export class QuestionsService {
 
   remove(id: number) {
     return this.questionsRepository.removeById(id);
+  }
+
+  follow({ id, userId }: IFollowQuestionProps) {
+    return this.followQuestion.create({ questionId: id, userId });
+  }
+
+  unfollow({ id, userId }: IFollowQuestionProps) {
+    return this.followQuestion.removeByQuestionIdUserId({
+      questionId: id,
+      userId,
+    });
   }
 }
