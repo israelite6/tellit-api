@@ -29,11 +29,11 @@ export class SpacesRespository {
         iconUrl: true,
         bannarUrl: true,
         id: true,
-        // _count: {
-        //   select: {
-        //     Topic: true,
-        //   },
-        // },
+        _count: {
+          select: {
+            Question: true,
+          },
+        },
       },
     });
     return spaces;
