@@ -19,6 +19,7 @@ import { FcmModule } from './app/fcm/fcm.module';
 import { DoSpacesModule } from './app/do/do-spaces.module';
 import { NotificationsModule } from './app/notifications/notifications.module';
 import { SpacesModule } from './app/spaces/spaces.module';
+import { QuestionsModule } from './app/questions/questions.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { SpacesModule } from './app/spaces/spaces.module';
     DoSpacesModule,
     NotificationsModule,
     SpacesModule,
+    QuestionsModule,
   ],
   controllers: [AppController],
   providers: [
