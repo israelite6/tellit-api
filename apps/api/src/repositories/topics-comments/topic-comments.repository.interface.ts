@@ -1,4 +1,4 @@
-import { Prisma, TopicComment } from '@prisma/client';
+import { Prisma, TopicComment, ECommentType } from '@prisma/client';
 export interface IUpdateTopicCommentProps {
   id: string;
   data: Partial<Prisma.TopicCommentUncheckedCreateInput>;
@@ -7,9 +7,11 @@ export interface IUpdateTopicCommentProps {
 export interface IFindManyTopicCommentProps {
   skip: number;
   take: number;
-  topicId: number;
+  topicId?: number;
   topicCommentId?: string;
   userId?: string;
+  answerId?: number;
+  type: ECommentType;
 }
 
 export interface IFindManyTopicComment {

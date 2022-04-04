@@ -109,6 +109,41 @@ export class QuestionsRespository {
     });
   }
 
+  async findManyTrending({ spaceId }: { spaceId: number }): Promise<any> {
+    return this.prismaService.question.findMany({
+      orderBy: {
+        id: 'desc',
+      },
+      select: {
+        question: true,
+        createdAt: true,
+        userId: true,
+        _count: {
+          select: {
+            FollowQuestion: true,
+          },
+        },
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            photoUrl: true,
+          },
+        },
+        space: {
+          select: {
+            title: true,
+          },
+        },
+        spaceId: true,
+      },
+      take: 10,
+      where: {
+        spaceId,
+      },
+    });
+  }
+
   async findOneById(id: number, userId?: string): Promise<Partial<Question>> {
     const question = await this.prismaService.question.findFirst({
       where: { id },

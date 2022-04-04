@@ -40,6 +40,12 @@ export class QuestionsService {
     };
   }
 
+  findAllTrending({ spaceId }: IGetRelatedQuestionsProps) {
+    return this.questionsRepository.findManyTrending({
+      spaceId,
+    });
+  }
+
   findAllRelated({ spaceId }: IGetRelatedQuestionsProps) {
     return this.questionsRepository.findManyRelated({
       spaceId,

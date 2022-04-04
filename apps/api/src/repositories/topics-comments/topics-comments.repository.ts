@@ -22,6 +22,8 @@ export class TopicCommentsRespository {
     topicId,
     topicCommentId,
     userId,
+    type,
+    answerId,
   }: IFindManyTopicCommentProps): Promise<IFindManyTopicComment> {
     const [topicComments, total] = await this.prismaService.$transaction([
       this.prismaService.topicComment.findMany({
@@ -64,6 +66,8 @@ export class TopicCommentsRespository {
             ...(topicCommentId
               ? [{ topicCommentId }]
               : [{ topicCommentId: null }]),
+            { type },
+            { answerId },
           ],
         },
       }),
@@ -74,6 +78,8 @@ export class TopicCommentsRespository {
             ...(topicCommentId
               ? [{ NOT: [{ topicCommentId: null }] }]
               : [{ topicCommentId: null }]),
+            { type },
+            { answerId },
           ],
         },
       }),

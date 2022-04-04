@@ -37,6 +37,15 @@ export class QuestionsController {
   }
 
   @Public()
+  @Get('/trending')
+  findAllTrending(@Query() { page, spaceId }: IGetQuestionsQuery) {
+    console.log({ page, spaceId });
+    return this.questionsService.findAllTrending({
+      spaceId: +spaceId,
+    });
+  }
+
+  @Public()
   @Get('/related')
   findAllRelated(@Query() { spaceId }: IGetRelatedQuestionsQuery) {
     return this.questionsService.findAllRelated({ spaceId: +spaceId });

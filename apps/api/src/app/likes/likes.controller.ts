@@ -11,6 +11,7 @@ import {
 import { LikesService } from './likes.service';
 import { CreateLikeDto } from './dto/create-like.dto';
 import { ELikeCategory } from '@prisma/client';
+import { Public } from '../../decorators/public.decorator';
 
 @Controller({ version: '1', path: 'likes' })
 export class LikesController {
@@ -105,6 +106,28 @@ export class LikesController {
       topicCommentId,
       ...createLikeDto,
       category: ELikeCategory.TOPIC_COMMENT,
+    });
+  }
+
+  @Public()
+  @Post('likee')
+  likee(@Body() body: any) {
+    console.log(body);
+  }
+
+  @Post(':answerId/answers')
+  createAnswer(
+    @Body() createLikeDto: CreateLikeDto,
+    @Request() req: any,
+    @Param('topicId') topicId: number,
+  ) {
+    const userId = req.user.userId;
+
+    return this.topicLikesService.create({
+      userId,
+      topicId,
+      ...createLikeDto,
+      category: ELikeCategory.TOPIC,
     });
   }
 }

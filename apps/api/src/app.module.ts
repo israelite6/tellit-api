@@ -20,6 +20,7 @@ import { DoSpacesModule } from './app/do/do-spaces.module';
 import { NotificationsModule } from './app/notifications/notifications.module';
 import { SpacesModule } from './app/spaces/spaces.module';
 import { QuestionsModule } from './app/questions/questions.module';
+import { AnswersModule } from './app/answers/answers.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { QuestionsModule } from './app/questions/questions.module';
     NotificationsModule,
     SpacesModule,
     QuestionsModule,
+    AnswersModule,
   ],
   controllers: [AppController],
   providers: [

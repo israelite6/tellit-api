@@ -28,6 +28,8 @@ export class TopicCommentsService {
         topicId: data.topicId,
         topicCommentId: data.topicCommentId,
         userId: data.userId,
+        type: data.type,
+        answerId: data.answerId,
       },
     );
 
