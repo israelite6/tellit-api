@@ -61,6 +61,7 @@ export class QuestionsRespository {
             },
           },
           spaceId: true,
+          id: true,
         },
         skip,
         take,
