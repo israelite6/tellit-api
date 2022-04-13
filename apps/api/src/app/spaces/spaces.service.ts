@@ -16,7 +16,7 @@ export class SpacesService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} space`;
+    return this.spacesRepository.findOneById(id);
   }
 
   update(id: number, updateSpaceDto: UpdateSpaceDto) {

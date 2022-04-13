@@ -21,6 +21,7 @@ import { NotificationsModule } from './app/notifications/notifications.module';
 import { SpacesModule } from './app/spaces/spaces.module';
 import { QuestionsModule } from './app/questions/questions.module';
 import { AnswersModule } from './app/answers/answers.module';
+import { MessagesModule } from './app/messages/messages.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { AnswersModule } from './app/answers/answers.module';
     SpacesModule,
     QuestionsModule,
     AnswersModule,
+    MessagesModule,
   ],
   controllers: [AppController],
   providers: [

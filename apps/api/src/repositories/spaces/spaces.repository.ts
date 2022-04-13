@@ -39,20 +39,25 @@ export class SpacesRespository {
     return spaces;
   }
 
-  // async findOneById(id: number): Promise<Partial<Space>> {
-  //   const spaces = await this.prismaService.space.findFirst({
-  //     where: { id },
-  //     select: {
-  //       title: true,
-  //       description: true,
-  //       createdAt: true,
-  //       iconUrl: true,
-  //       bannarUrl: true,
-  //       id: true,
-  //     },
-  //   });
-  //   return spaces;
-  // }
+  async findOneById(id: number): Promise<Partial<Space>> {
+    const spaces = await this.prismaService.space.findFirst({
+      where: { id },
+      select: {
+        title: true,
+        description: true,
+        createdAt: true,
+        iconUrl: true,
+        bannarUrl: true,
+        id: true,
+        _count: {
+          select: {
+            Question: true,
+          },
+        },
+      },
+    });
+    return spaces;
+  }
 
   // async updateById({ id, data }: IUpdateProps): Promise<Space> {
   //   const updated = await this.prismaService.space.update({

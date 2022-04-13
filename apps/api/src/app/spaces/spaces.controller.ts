@@ -27,7 +27,8 @@ export class SpacesController {
     return this.spacesService.findAll();
   }
 
-  @Get(':id')
+  @Public()
+  @Get(':id/id')
   findOne(@Param('id') id: string) {
     return this.spacesService.findOne(+id);
   }
