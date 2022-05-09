@@ -7,9 +7,11 @@ import { User } from '@prisma/client';
 import { Queue } from 'bull';
 import { InjectQueue } from '@nestjs/bull';
 import {
+  PAGINATION_THRESHOLD,
   SEND_EMAIL_QUEUE_NAME,
   SIGNUP_EMAIL_JOB,
 } from '../../config/constants';
+import { IFindMentionDto, IFindMentionProps } from './users.interface';
 
 @Injectable()
 export class UsersService {
@@ -27,23 +29,36 @@ export class UsersService {
       email: user.email,
       name: `${user.firstName} ${user.lastName}`,
     });
-    console.log(test);
     return this.helperService.signJwt(user);
+  }
+
+  async findUserForMention({ search, page, isPaginated }: IFindMentionProps) {
+    const { users, total } = await this.usersRepository.findUserForMention({
+      search,
+      ...this.helperService.paginate(page),
+      isPaginated,
+    });
+
+    return {
+      users,
+      meta: { currentPage: page, total, perPage: PAGINATION_THRESHOLD },
+    };
   }
 
   findAll() {
     return `This action returns all users`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
+    return this.usersRepository.getOneByUserId(id);
     return `This action returns a #${id} user`;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(id: string, updateUserDto: UpdateUserDto) {
+    return this.usersRepository.updateById(id, updateUserDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(userId: string) {
+    return this.usersRepository.getOneByUserId(userId);
   }
 }

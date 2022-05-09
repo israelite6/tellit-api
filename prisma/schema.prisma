@@ -24,9 +24,9 @@ model RolePermission {
   roleId       String
   permission   Permission @relation(references: [id], fields: [permissionId])
   role         Role       @relation(references: [id], fields: [roleId], onDelete: Cascade)
-  created_at   DateTime?  @default(now())
-  updated_at   DateTime?
-  deleted_at   DateTime?
+  createdAt    DateTime?  @default(now()) @map("created_at")
+  updatedAt    DateTime?  @map("updated_at")
+  deletedAt    DateTime?  @map("deleted_at")
 
   @@map("role_permission")
 }
@@ -36,34 +36,305 @@ model Role {
   role            String
   RolePermissions RolePermission[]
   User            User[]
-  created_at      DateTime?        @default(now())
-  updated_at      DateTime?
-  deleted_at      DateTime?
+  createdAt       DateTime?        @default(now()) @map("created_at")
+  updatedAt       DateTime?        @map("updated_at")
+  deletedAt       DateTime?        @map("deleted_at")
 
   @@map("roles")
 }
 
 model User {
-  id          String    @id @default(cuid())
-  email       String    @unique
-  firstName   String
-  lastName    String
-  middleName  String?
-  username    String    @unique
-  address     String?
-  phoneNumber String    @unique
-  password    String
-  gender      Gender?
-  roleId      String?
-  role        Role?     @relation(references: [id], fields: [roleId])
-  created_at  DateTime? @default(now())
-  updated_at  DateTime?
-  deleted_at  DateTime?
+  id                            String    @id @default(cuid())
+  email                         String    @unique
+  firstName                     String    @map("first_name")
+  lastName                      String    @map("last_name")
+  middleName                    String?   @map("middle_name")
+  username                      String    @unique
+  address                       String?
+  phoneNumber                   String    @unique @map("phone_number")
+  password                      String
+  gender                        Gender?
+  city                          String?
+  state                         String?
+  country                       String?
+  photoUrl                      String?   @map("photo_url")
+  about                         String?
+  forgetPasswordToken           String?   @map("forget_password_token")
+  forgetPasswordTokenExpiration DateTime? @map("forget_password_token_expiration")
+  roleId                        String?   @map("role_id")
+  role                          Role?     @relation(references: [id], fields: [roleId])
+  createdAt                     DateTime? @default(now()) @map("created_at")
+  updatedAt                     DateTime? @map("updated_at")
+  deletedAt                     DateTime? @map("deleted_at")
+
+  Topic            Topic[]
+  Comment          TopicComment[]
+  EducationHistory EducationHistory[]
+  WorkExperience   WorkExperience[]
+  Like             Like[]
+  Fcm              Fcm[]
+  Notification     Notification[]
+  Question         Question[]
+  FollowQuestion   FollowQuestion[]
+  Answer           Answer[]
 
   @@map("users")
+  Message Message[]
 }
 
 enum Gender {
   FEMALE
   MALE
+}
+
+model Forum {
+
+  id          Int       @id @default(autoincrement())
+  title       String    @unique
+  description String?
+  iconUrl     String?   @map("icon_url")
+  bannarUrl   String?
+  createdAt   DateTime? @default(now()) @map("created_at")
+  updatedAt   DateTime? @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  Topic Topic[]
+  @@map("forums")
+}
+
+model Topic {
+  id          BigInt    @id @default(autoincrement())
+  title       String
+  description String
+  userId      String
+  user        User      @relation(references: [id], fields: [userId])
+  showOnFeed  Boolean?  @default(false) @map("show_on_feed")
+  forumId     Int       @map("forum_id")
+  forum       Forum     @relation(references: [id], fields: [forumId], onDelete: Cascade)
+  views       BigInt?   @default(0)
+  share       BigInt?   @default(0)
+  isVisible   Boolean?  @default(true)
+  mention     String?
+  createdAt   DateTime? @default(now()) @map("created_at")
+  updatedAt   DateTime? @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  Comment TopicComment[]
+  Like    Like[]
+  @@map("topics")
+}
+
+model TopicComment {
+  id             String       @id @default(cuid())
+  userId         String       @map("user_id")
+  user           User         @relation(references: [id], fields: [userId])
+  topicId        BigInt?      @map("topic_id")
+  topic          Topic?       @relation(references: [id], fields: [topicId], onDelete: Cascade)
+  answerId       Int?         @map("answer_id")
+  answer         Answer?      @relation(references: [id], fields: [answerId], onDelete: Cascade)
+  type           ECommentType @default(TOPIC)
+  comment        String
+  isAnonymous    Boolean?     @default(false) @map("is_anonymous")
+  topicCommentId String?      @map("topic_comment_id")
+  mention        String?
+  createdAt      DateTime?    @default(now()) @map("created_at")
+  updatedAt      DateTime?    @map("updated_at")
+  deletedAt      DateTime?    @map("deleted_at")
+
+  Like Like[]
+  @@map("topic_comments")
+}
+
+enum ECommentType {
+  TOPIC
+  ANSWER
+}
+
+model EducationHistory {
+  id         String    @id @default(cuid())
+  userId     String    @map("user_id")
+  user       User      @relation(references: [id], fields: [userId], onDelete: Cascade)
+  degree     String
+  course     String
+  startMonth String    @default("00") @map("start_month")
+  startYear  String    @default("0000") @map("start_year")
+  endMonth   String?   @default("00") @map("end_month")
+  endYear    String?   @default("0000") @map("end_year")
+  schoolName String    @map("school_name")
+  isCurrent  Boolean   @map("is_current")
+  createdAt  DateTime? @default(now()) @map("created_at")
+  updatedAt  DateTime? @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+
+  @@map("education_histories")
+}
+
+model WorkExperience {
+  id          String    @id @default(cuid())
+  userId      String    @map("user_id")
+  user        User      @relation(references: [id], fields: [userId], onDelete: Cascade)
+  title       String
+  type        String
+  startMonth  String    @default("00") @map("start_month")
+  startYear   String    @default("0000") @map("start_year")
+  endMonth    String?   @default("00") @map("end_month")
+  endYear     String?   @default("0000") @map("end_year")
+  companyName String    @map("company_name")
+  location    String
+  isCurrent   Boolean   @map("is_current")
+  createdAt   DateTime? @default(now()) @map("created_at")
+  updatedAt   DateTime? @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  @@map("work_experiences")
+}
+
+model Like {
+  id             String        @id @default(cuid())
+  userId         String        @map("user_id")
+  user           User          @relation(references: [id], fields: [userId], onDelete: Cascade)
+  topicId        BigInt?       @map("topic_id")
+  topic          Topic?        @relation(references: [id], fields: [topicId])
+  topicCommentId String?
+  topicComment   TopicComment? @relation(references: [id], fields: [topicCommentId])
+  type           ELikeType
+  category       ELikeCategory
+  createdAt      DateTime?     @default(now()) @map("created_at")
+  updatedAt      DateTime?     @map("updated_at")
+  deletedAt      DateTime?     @map("deleted_at")
+
+  @@map("likes")
+}
+
+enum ELikeType {
+  LIKE
+  INSIGHTFUL
+  THREE_GBOSA
+  BEER
+}
+
+enum ELikeCategory {
+  TOPIC
+  TOPIC_COMMENT
+  ANSWER
+  ANSWER_COMMENT
+}
+
+model Fcm {
+  id          String  @id @default(cuid())
+  deviceToken String  @unique @map("device_token")
+  os          EOs
+  userId      String? @map("user_id")
+  user        User?   @relation(references: [id], fields: [userId])
+
+  createdAt DateTime? @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("fcm")
+}
+
+model Notification {
+  id          String            @id @default(cuid())
+  userId      String?           @map("user_id")
+  user        User?             @relation(references: [id], fields: [userId])
+  url         String?
+  title       String
+  description String?
+  type        ENotificationType
+  createdAt   DateTime?         @default(now()) @map("created_at")
+  updatedAt   DateTime?         @map("updated_at")
+  deletedAt   DateTime?         @map("deleted_at")
+
+  @@map("notifications")
+}
+
+enum EOs {
+  WEB
+  ANDROID
+  IOS
+}
+
+enum ENotificationType {
+  TOPIC
+  MENTION
+  COMMENT
+}
+
+model Space {
+
+  id          Int       @id @default(autoincrement())
+  title       String    @unique
+  description String?
+  iconUrl     String?   @map("icon_url")
+  bannarUrl   String?
+  createdAt   DateTime? @default(now()) @map("created_at")
+  updatedAt   DateTime? @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  Question Question[]
+  @@map("spaces")
+}
+
+model Question {
+
+  id        Int       @id @default(autoincrement())
+  question  String
+  userId    String    @map("user_id")
+  user      User      @relation(references: [id], fields: [userId])
+  spaceId   Int?      @map("space_id")
+  space     Space?    @relation(references: [id], fields: [spaceId])
+  createdAt DateTime? @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  FollowQuestion FollowQuestion[]
+  Answer         Answer[]
+  @@map("questions")
+}
+
+model FollowQuestion {
+
+  id         Int       @id @default(autoincrement())
+  questionId Int
+  question   Question  @relation(references: [id], fields: [questionId])
+  userId     String    @map("user_id")
+  user       User      @relation(references: [id], fields: [userId])
+  createdAt  DateTime? @default(now()) @map("created_at")
+  updatedAt  DateTime? @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+
+  @@map("follow_question")
+}
+
+model Answer {
+
+  id         Int       @id @default(autoincrement())
+  answer     String
+  questionId Int       @map("question_id")
+  question   Question  @relation(references: [id], fields: [questionId])
+  userId     String    @map("user_id")
+  user       User      @relation(references: [id], fields: [userId])
+  spaceId    Int?      @map("space_id")
+  createdAt  DateTime? @default(now()) @map("created_at")
+  updatedAt  DateTime? @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+
+  TopicComment TopicComment[]
+  @@map("answers")
+}
+
+model Message {
+
+  id         Int       @id @default(autoincrement())
+  subject    String?
+  message    String
+  toUserId   String    @map("to_user_id")
+  fromUserId String    @map("from_user_id")
+  fromUser   User      @relation(references: [id], fields: [fromUserId])
+  createdAt  DateTime? @default(now()) @map("created_at")
+  updatedAt  DateTime? @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+
+  @@map("messages")
 }

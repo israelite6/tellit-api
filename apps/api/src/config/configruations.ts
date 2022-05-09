@@ -7,4 +7,7 @@ export default () => ({
     'postgresql://dunamis:dunamis@167.99.93.162:5400/tellit-api?schema=public',
   redisHost: process.env.REDIS_HOST,
   redisPort: parseInt(process.env.REDIS_PORT),
+  sendGridApi: process.env.SEND_GRID_API,
+  emailFrom: process.env.EMAIL_FROM,
+  env: process.env.ENV,
 });

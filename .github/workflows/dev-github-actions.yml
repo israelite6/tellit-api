@@ -22,7 +22,7 @@ jobs:
           SLACK_CHANNEL: build
           SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
           SLACK_ICON: https://github.com/rtCamp.png?size=48
-          SLACK_MESSAGE: "Building just begin now :rocket:"
+          SLACK_MESSAGE: 'Building just begin now :rocket:'
           SLACK_TITLE: Build Begin
           SLACK_USERNAME: rtCamp
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
@@ -42,12 +42,14 @@ jobs:
           script: |
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            nvm install --lts
+            nvm use v12.22.7
             node -v
             npm -v
-            cd /var/www/html/tellit/new/tellit-api
+            cd /var/www/html/tellit/dev/tellit-api
             git pull
             npm install
+            npm run build:api
+            npm run build:queue-worker
             npx prisma generate
             npx  prisma migrate dev
             npm run start:pm2
@@ -57,7 +59,7 @@ jobs:
           SLACK_CHANNEL: build
           SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
           SLACK_ICON: https://github.com/rtCamp.png?size=48
-          SLACK_MESSAGE: "Building just complete :rocket:"
+          SLACK_MESSAGE: 'Building just complete :rocket:'
           SLACK_TITLE: Build Complete
           SLACK_USERNAME: rtCamp
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
