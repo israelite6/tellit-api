@@ -59,8 +59,10 @@ model User {
   country                       String?
   photoUrl                      String?   @map("photo_url")
   about                         String?
+  isEmailConfirmed              Boolean?  @default(false) @map("is_email_confirmed")
   forgetPasswordToken           String?   @map("forget_password_token")
   forgetPasswordTokenExpiration DateTime? @map("forget_password_token_expiration")
+  referralId                    String?   @map("referral_id")
   roleId                        String?   @map("role_id")
   role                          Role?     @relation(references: [id], fields: [roleId])
   createdAt                     DateTime? @default(now()) @map("created_at")
@@ -78,8 +80,8 @@ model User {
   FollowQuestion   FollowQuestion[]
   Answer           Answer[]
 
-  @@map("users")
   Message Message[]
+  @@map("users")
 }
 
 enum Gender {
@@ -130,7 +132,7 @@ model TopicComment {
   user           User         @relation(references: [id], fields: [userId])
   topicId        BigInt?      @map("topic_id")
   topic          Topic?       @relation(references: [id], fields: [topicId], onDelete: Cascade)
-  answerId       Int?         @map("answer_id")
+  answerId       String?      @map("answer_id")
   answer         Answer?      @relation(references: [id], fields: [answerId], onDelete: Cascade)
   type           ECommentType @default(TOPIC)
   comment        String
@@ -154,8 +156,8 @@ model EducationHistory {
   id         String    @id @default(cuid())
   userId     String    @map("user_id")
   user       User      @relation(references: [id], fields: [userId], onDelete: Cascade)
-  degree     String
-  course     String
+  degree     String?
+  course     String?
   startMonth String    @default("00") @map("start_month")
   startYear  String    @default("0000") @map("start_year")
   endMonth   String?   @default("00") @map("end_month")
@@ -197,6 +199,8 @@ model Like {
   topic          Topic?        @relation(references: [id], fields: [topicId])
   topicCommentId String?
   topicComment   TopicComment? @relation(references: [id], fields: [topicCommentId])
+  answerId       String?       @map("answer_id")
+  answer         Answer?       @relation(references: [id], fields: [answerId])
   type           ELikeType
   category       ELikeCategory
   createdAt      DateTime?     @default(now()) @map("created_at")
@@ -211,6 +215,7 @@ enum ELikeType {
   INSIGHTFUL
   THREE_GBOSA
   BEER
+  UPVOTE
 }
 
 enum ELikeCategory {
@@ -309,7 +314,7 @@ model FollowQuestion {
 
 model Answer {
 
-  id         Int       @id @default(autoincrement())
+  id         String    @id @default(cuid())
   answer     String
   questionId Int       @map("question_id")
   question   Question  @relation(references: [id], fields: [questionId])
@@ -322,6 +327,7 @@ model Answer {
 
   TopicComment TopicComment[]
   @@map("answers")
+  Like Like[]
 }
 
 model Message {
