@@ -7,10 +7,10 @@ import { seedUsers } from './seed/functions/users';
 const prisma = new PrismaClient();
 
 async function main() {
-  seedForums();
-  seedUsers();
-  seedSpaces();
-  seedQuestions();
+  await seedUsers();
+  // seedForums();
+  // seedSpaces();
+  // seedQuestions();
   // const alice = await prisma.forum.upsert({
   //   where: { email: 'alice@prisma.io' },
   //   update: {},

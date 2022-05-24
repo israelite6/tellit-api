@@ -26,10 +26,10 @@ const getWorkExperienceByUserId = (uId) => {
         company_name: companyName,
       }) => {
         return {
-          userId,
+          // userId,
           title,
           startYear,
-          startMoth: '01',
+          startMonth: '01',
           endMonth: '01',
           endYear,
           companyName,
@@ -64,9 +64,10 @@ const getEducationHistoryByUserId = (id) => {
     );
 };
 
-export const seedUsers = () => {
-  users.forEach(
-    async ({
+export const seedUsers = async () => {
+  for (let i = 0; i < users.length; i++) {
+    console.log(i);
+    const {
       id,
       email,
       password,
@@ -74,35 +75,36 @@ export const seedUsers = () => {
       created_at: createdAt,
       is_email_confirm: isEmailConfirmed,
       referral_id: referralId,
-    }) => {
-      const { address, full_name: fullName } = getProfileByUserId(id);
-      const [lastName, firstName] = fullName.split(' ');
+    } = users[i];
 
-      const filteredWorkExperience = getWorkExperienceByUserId(id);
-      const filteredEducationHistory = getEducationHistoryByUserId(id);
+    const { address, full_name: fullName } = getProfileByUserId(id);
+    const [lastName, firstName] = fullName.split(' ');
 
-      await prisma.user.upsert({
-        where: { id },
-        update: {},
-        create: {
-          id,
-          lastName,
-          firstName: firstName || lastName,
-          email,
-          password,
-          username,
-          createdAt,
-          isEmailConfirmed,
-          referralId,
-          address,
-          WorkExperience: {
-            create: filteredWorkExperience,
-          },
-          EducationHistory: {
-            create: filteredEducationHistory,
-          },
+    const filteredWorkExperience = getWorkExperienceByUserId(id);
+    const filteredEducationHistory = getEducationHistoryByUserId(id);
+
+    await prisma.user.upsert({
+      where: { id },
+      update: {},
+      create: {
+        id,
+        lastName,
+        firstName: firstName || lastName,
+        email,
+        password,
+        username,
+        createdAt,
+        isEmailConfirmed,
+        referralId,
+        address,
+        phoneNumber: String(Date.now() + Math.floor(Math.random() * 1000)),
+        WorkExperience: {
+          create: filteredWorkExperience,
         },
-      });
-    },
-  );
+        EducationHistory: {
+          create: filteredEducationHistory,
+        },
+      },
+    });
+  }
 };

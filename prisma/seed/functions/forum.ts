@@ -1,5 +1,4 @@
 import { PrismaClient, ELikeCategory, ELikeType } from '@prisma/client';
-import * as util from 'util';
 import forums from '../data/forum';
 import topics from '../data/topic';
 import comments from '../data/comments';
@@ -19,13 +18,12 @@ const getTopicByForumId = (fId) => {
         created_at: createdAt,
         id,
       }) => ({
-        forumId,
         title,
         description,
         userId,
         createdAt,
         id,
-        TopicComment: null,
+        Comment: null,
         Like: null,
       }),
     );
@@ -36,12 +34,13 @@ const getCommentsByTopicId = (cId) => {
     .filter(({ topic_id }) => topic_id === cId)
     .map(
       ({
-        topic_id: topicId,
+        // topic_id: topicId,
+        user_id: userId,
         comment,
         topic_comment_id: topicCommentId,
         id,
         created_at: createdAt,
-      }) => ({ topicCommentId, topicId, comment, id, createdAt, Like: null }),
+      }) => ({ topicCommentId, comment, id, userId, createdAt, Like: null }),
     );
 };
 
@@ -60,23 +59,37 @@ const mapLikeType = (type) => {
 const getLikeByTopicId = (tId) => {
   return likes
     .filter(({ topic_id }) => topic_id === tId)
-    .map(({ topic_id: topicId, created_at: createdAt, type }) => ({
-      topicId,
-      createdAt,
-      type: mapLikeType(type),
-      category: ELikeCategory.TOPIC,
-    }));
+    .map(
+      ({
+        topic_id: topicId,
+        created_at: createdAt,
+        type,
+        user_id: userId,
+      }) => ({
+        // topicId,
+        userId,
+        createdAt,
+        type: mapLikeType(type),
+        category: ELikeCategory.TOPIC,
+      }),
+    );
 };
 
 const getLikeByCommentId = (cId) => {
   return likes
     .filter(({ topic_comment_id }) => topic_comment_id === cId)
     .map(
-      ({ topic_comment_id: topicCommentId, created_at: createdAt, type }) => ({
-        topicCommentId,
+      ({
+        // topic_comment_id: topicCommentId,
+        created_at: createdAt,
+        type,
+        user_id: userId,
+      }) => ({
+        // topicCommentId,
         createdAt,
         type: mapLikeType(type),
         category: ELikeCategory.TOPIC_COMMENT,
+        userId,
       }),
     );
 };
@@ -88,7 +101,7 @@ export const seedForums = () => {
     formattedTopics.map((topic) => {
       const formattedComment = getCommentsByTopicId(topic.id);
       const topicLikes = getLikeByTopicId(topic.id);
-      topic.TopicComment = {
+      topic.Comment = {
         create: formattedComment,
       };
       topic.Like = {
