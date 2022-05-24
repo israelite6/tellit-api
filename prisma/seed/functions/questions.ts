@@ -4,7 +4,6 @@ import {
   ELikeCategory,
   ECommentType,
 } from '@prisma/client';
-import * as util from 'util';
 import answers from '../data/answer';
 import likes from '../data/likes';
 import questions from '../data/questions';
@@ -22,7 +21,7 @@ const getAnswerByQuestionId = (qId) => {
         created_at: createdAt,
         user_id: userId,
       }) => ({
-        questionId,
+        // questionId,
         answer,
         id,
         createdAt,
@@ -58,7 +57,7 @@ const getAnswerLikeByAnswerId = (id) => {
   return likes
     .filter(({ answer_id: answerId }) => answerId === id)
     .map(({ answer_id: answerId, user_id: userId }) => ({
-      answerId,
+      // answerId,
       userId,
       type: ELikeType.LIKE,
       category: ELikeCategory.ANSWER,
@@ -91,8 +90,8 @@ export const seedQuestions = () => {
           comment.Like = { create: filteredCommentLike };
         });
 
-        answer.TopicComment = { create: likeAnswer };
-        answer.Like = { create: filteredComment };
+        answer.TopicComment = { create: filteredComment };
+        answer.Like = { create: likeAnswer };
         return answer;
       });
 
