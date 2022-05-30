@@ -7,8 +7,8 @@ import { seedUsers } from './seed/functions/users';
 const prisma = new PrismaClient();
 
 async function main() {
-  await seedUsers();
-  // seedForums();
+  // await seedUsers();
+  await seedForums();
   // seedSpaces();
   // seedQuestions();
   // const alice = await prisma.forum.upsert({
