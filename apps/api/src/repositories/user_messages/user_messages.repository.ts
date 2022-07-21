@@ -17,9 +17,10 @@ export class UserMessagesRepository {
   constructor(private prismaService: PrismaService) {}
 
   async create(data: Prisma.UserMessageUncheckedCreateInput) {
+    const doc = { ...data, updatedAt: new Date() };
     try {
       const inserted = await this.prismaService.userMessage.create({
-        data,
+        data: doc,
       });
       return inserted;
     } catch (e) {
@@ -42,6 +43,26 @@ export class UserMessagesRepository {
       },
     });
     return connection;
+  }
+
+  async updateMessageConnection({ toUserId, fromUserId }) {
+    const updated = await this.prismaService.userMessage.updateMany({
+      data: {
+        updatedAt: new Date(),
+      },
+      where: {
+        OR: [
+          {
+            toUserId,
+            fromUserId,
+          },
+          {
+            toUserId: fromUserId,
+            fromUserId: toUserId,
+          },
+        ],
+      },
+    });
   }
   async findMany({
     skip,
@@ -76,7 +97,62 @@ export class UserMessagesRepository {
       include: { fromUser: true },
     });
 
-    return { messages, total: 10 };
+    return messages;
+  }
+  async findAllMessage({
+    skip,
+    take,
+    fromUserId,
+  }: Exclude<IFindMessage, 'toUserId'>): Promise<any> {
+    console.log({
+      skip,
+      take,
+      fromUserId,
+    });
+    const [messages, total] = await this.prismaService.$transaction([
+      this.prismaService.userMessage.findMany({
+        orderBy: {
+          updatedAt: 'desc',
+        },
+        skip,
+        take,
+        where: {
+          OR: [
+            {
+              fromUserId,
+            },
+            {
+              toUserId: fromUserId,
+            },
+          ],
+        },
+      }),
+      this.prismaService.userMessage.count({
+        where: {
+          OR: [
+            {
+              fromUserId,
+            },
+            {
+              toUserId: fromUserId,
+            },
+          ],
+        },
+      }),
+    ]);
+    const allMessages = await Promise.all(
+      await messages.map(async (item) => {
+        const { toUserId, fromUserId } = item;
+        const lastMessage = await this.findMany({
+          skip: 0,
+          take: 1,
+          toUserId,
+          fromUserId,
+        });
+        return { ...item, message: lastMessage };
+      }),
+    );
+    return { allMessages, total };
   }
 
   //   async findManyRelated({ spaceId }: { spaceId: number }): Promise<any> {

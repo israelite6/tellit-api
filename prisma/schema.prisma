@@ -339,6 +339,7 @@ model Message {
   toUserId   String    @map("to_user_id")
   fromUserId String    @map("from_user_id")
   fromUser   User      @relation(references: [id], fields: [fromUserId])
+  toUser     User
   createdAt  DateTime? @default(now()) @map("created_at")
   updatedAt  DateTime? @map("updated_at")
   deletedAt  DateTime? @map("deleted_at")
@@ -355,5 +356,5 @@ model UserMessage {
   updatedAt  DateTime? @map("updated_at")
   deletedAt  DateTime? @map("deleted_at")
 
-  @@map("usermessages")
+  @@map("user_messages")
 }

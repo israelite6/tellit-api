@@ -39,28 +39,44 @@ export class MessagesRepository {
       toUserId,
       fromUserId,
     });
-    const messages = await this.prismaService.message.findMany({
-      orderBy: {
-        id: 'desc',
-      },
-      skip,
-      take,
-      where: {
-        OR: [
-          {
-            toUserId,
-            fromUserId,
-          },
-          {
-            toUserId: fromUserId,
-            fromUserId: toUserId,
-          },
-        ],
-      },
-      include: { fromUser: true },
-    });
+    const [messages, total] = await this.prismaService.$transaction([
+      this.prismaService.message.findMany({
+        orderBy: {
+          id: 'desc',
+        },
+        skip,
+        take,
+        where: {
+          OR: [
+            {
+              toUserId,
+              fromUserId,
+            },
+            {
+              toUserId: fromUserId,
+              fromUserId: toUserId,
+            },
+          ],
+        },
+        include: { fromUser: true },
+      }),
+      this.prismaService.message.count({
+        where: {
+          OR: [
+            {
+              toUserId,
+              fromUserId,
+            },
+            {
+              toUserId: fromUserId,
+              fromUserId: toUserId,
+            },
+          ],
+        },
+      }),
+    ]);
 
-    return { messages, total: 10 };
+    return { messages, total };
   }
 
   //   async findManyRelated({ spaceId }: { spaceId: number }): Promise<any> {

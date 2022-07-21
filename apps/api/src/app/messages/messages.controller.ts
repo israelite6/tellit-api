@@ -43,9 +43,13 @@ export class MessagesController {
     return this.messagesService.findAll({ ...findMessageDto, fromUserId });
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.messagesService.findOne(+id);
+  @Get('all')
+  findOne(
+    @Body() findMessageDto: Exclude<FindMessageDto, 'toUserId'>,
+    @Request() req: any,
+  ) {
+    const doc = { ...findMessageDto, fromUserId: req.user.userId };
+    return this.messagesService.findAllMyMessenger(doc);
   }
 
   @Patch(':id')

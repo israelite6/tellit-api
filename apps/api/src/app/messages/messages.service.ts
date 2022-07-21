@@ -13,21 +13,31 @@ export class MessagesService {
   ) {}
   async create(createMessageDto: ICreateMessage) {
     const { fromUserId, toUserId } = createMessageDto;
-    const ifExist = await this.userMessageRepository.findMessageConnection({
-      fromUserId,
-      toUserId,
-    });
-
-    console.log(ifExist);
-
-    if (!ifExist) {
-      this.userMessageRepository.create({ toUserId, fromUserId });
-    }
+    this.updateMessageConnection({ toUserId, fromUserId });
     return this.messageRepository.create(createMessageDto);
   }
 
   findAll(findMessageDto: IFindMessage) {
     return this.messageRepository.findMany(findMessageDto);
+  }
+
+  async updateMessageConnection({ toUserId, fromUserId }) {
+    const ifExist = await this.userMessageRepository.findMessageConnection({
+      fromUserId,
+      toUserId,
+    });
+
+    if (!ifExist) {
+      this.userMessageRepository.create({ toUserId, fromUserId });
+    } else {
+      this.userMessageRepository.updateMessageConnection({
+        toUserId,
+        fromUserId,
+      });
+    }
+  }
+  async findAllMyMessenger(findMessageDto: Exclude<IFindMessage, 'toUserId'>) {
+    return this.userMessageRepository.findAllMessage(findMessageDto);
   }
 
   findOne(id: number) {
