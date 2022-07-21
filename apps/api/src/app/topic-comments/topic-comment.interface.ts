@@ -6,12 +6,12 @@ export interface ICreateTopicCommentProps {
   topicCommentId?: string;
   topicId?: number;
   type: ECommentType;
-  answerId?: number;
+  answerId?: string;
 }
 
 export interface IFindManyTopicCommentProps {
   topicId?: number;
-  answerId?: number;
+  answerId?: string;
   page: number;
   topicCommentId?: string;
   userId?: string;

@@ -6,23 +6,41 @@ import {
   Patch,
   Param,
   Delete,
+  Request,
 } from '@nestjs/common';
 import { MessagesService } from './messages.service';
-import { CreateMessageDto } from './dto/create-message.dto';
+import { CreateMessageDto, FindMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
+import { Public } from '../../decorators/public.decorator';
+import { UsersService } from '../users/users.service';
+import { User } from '@prisma/client';
+import { CreateUserDto } from '../users/dto/create-user.dto';
 
-@Controller('messages')
+// @Controller('messages')
+@Controller({ version: '1', path: 'messages' })
 export class MessagesController {
-  constructor(private readonly messagesService: MessagesService) {}
+  constructor(
+    private readonly messagesService: MessagesService,
+    private readonly userService: UsersService,
+  ) {}
 
   @Post()
-  create(@Body() createMessageDto: CreateMessageDto) {
-    return this.messagesService.create(createMessageDto);
+  async create(
+    @Body() createMessageDto: CreateMessageDto,
+    @Request() req: any,
+  ) {
+    const fromUserId = req.user.userId as string;
+    return this.messagesService.create({
+      ...createMessageDto,
+      fromUserId,
+    });
   }
 
   @Get()
-  findAll() {
-    return this.messagesService.findAll();
+  findAll(@Body() findMessageDto: FindMessageDto, @Request() req: any) {
+    const fromUserId = req.user.userId as string;
+
+    return this.messagesService.findAll({ ...findMessageDto, fromUserId });
   }
 
   @Get(':id')

@@ -86,7 +86,7 @@ export class TopicCommentsController {
   createAnswers(
     @Body() createTopicCommentDto: CreateTopicCommentDto,
     @Request() req: any,
-    @Param('answerId') answerId: number,
+    @Param('answerId') answerId: string,
   ) {
     const userId = req.user.userId as string;
     return this.topicCommentsService.create({
@@ -100,7 +100,7 @@ export class TopicCommentsController {
   @Public()
   @Get('answers/:answerId')
   findAllAnswers(
-    @Param('answerId') answerId: number,
+    @Param('answerId') answerId: string,
     @Query() query: any,
     @Request() req: any,
   ) {
