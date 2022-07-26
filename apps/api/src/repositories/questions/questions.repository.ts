@@ -46,6 +46,7 @@ export class QuestionsRespository {
           _count: {
             select: {
               FollowQuestion: true,
+              Answer: true,
             },
           },
           user: {
@@ -155,6 +156,7 @@ export class QuestionsRespository {
         _count: {
           select: {
             FollowQuestion: true,
+            Answer: true,
           },
         },
         user: {
