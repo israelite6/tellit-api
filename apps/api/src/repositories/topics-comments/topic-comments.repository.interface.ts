@@ -10,7 +10,7 @@ export interface IFindManyTopicCommentProps {
   topicId?: number;
   topicCommentId?: string;
   userId?: string;
-  answerId?: number;
+  answerId?: string;
   type: ECommentType;
 }
 

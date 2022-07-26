@@ -13,6 +13,7 @@ export class AuthService {
   ) {}
 
   async login(loginAuthDto: LoginAuthDto) {
+    console.log(loginAuthDto);
     const email = loginAuthDto.email;
     const user =
       await this.usersRepository.getOneByEmailOrUsernameOrPhoneNumber(email);
